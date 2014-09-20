@@ -1,3 +1,19 @@
+/**
+ * Depth.
+ * 
+ * This example implements a DOF using advanced rendering techniques.
+ *
+ * Thanks to 'edumo' who in turn ported the example from 'neilmendoza'.
+ * See:
+ *
+ * 1. http://forum.processing.org/two/discussion/comment/24421
+ * 2. https://github.com/neilmendoza/ofxPostProcessing
+ *
+ * Here we simplified [1] to its minimum.
+ * 
+ * Press 'h' to display the key shortcuts and mouse bindings in the console.
+ */
+
 import remixlab.proscene.*;
 
 PShader depthPShader, dofPShader;

@@ -1,7 +1,7 @@
 proscene-experiments
 ====================
 
-[Proscene](https://github.com/remixlab/proscene) experiments conducted at [disi](disi.unal.edu.co)
+[Proscene](https://github.com/remixlab/proscene) code flirting experiments conducted at [disi](disi.unal.edu.co)
 
 Clone this repository at your sketchbook location:
 
@@ -10,4 +10,12 @@ $cd <my_sketchbook>
 $git clone https://github.com/remixlab/proscene-experiments.git
 ```
 
-Please create a [pull request](https://help.github.com/articles/creating-a-pull-request) to contribute back.
+To contribute please create a [pull request](https://help.github.com/articles/creating-a-pull-request).
+
+## Ideas
+
++ Allow to load aribitrary scenes (Depth and DOF).
++ Use PShapes to burst performance (Depth and DOF).
++ Use the scene `pixelDepth(pixel)` method to find the focus target in DOF (currently only found at the [master branch](https://github.com/remixlab/proscene/blob/master/src/remixlab/proscene/Scene.java)).
++ Adapt the others [openframeworks](http://www.openframeworks.cc/) addons found at the [ofxPostProcessing repo](https://github.com/neilmendoza/ofxPostProcessing)
+to **Processing** using **Proscene**.

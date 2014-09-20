@@ -1,3 +1,11 @@
+/**
+ * Depth.
+ * 
+ * This example isolates the depth shader from the DOF example.
+ * 
+ * Press 'h' to display the key shortcuts and mouse bindings in the console.
+ */
+
 import remixlab.proscene.*;
 
 PShader depthShader;
