@@ -17,5 +17,5 @@ To contribute please create a [pull request](https://help.github.com/articles/cr
 + Allow to load aribitrary scenes (Depth and DOF).
 + Use PShapes to burst performance (Depth and DOF).
 + Use the scene `pixelDepth(pixel)` method to find the focus target in DOF (currently only found at the [master branch](https://github.com/remixlab/proscene/blob/master/src/remixlab/proscene/Scene.java)).
-+ Adapt the others [openframeworks](http://www.openframeworks.cc/) addons found at the [ofxPostProcessing repo](https://github.com/neilmendoza/ofxPostProcessing)
++ Adapt the other [openframeworks](http://www.openframeworks.cc/) addons found at the [ofxPostProcessing repo](https://github.com/neilmendoza/ofxPostProcessing)
 to **Processing** using **Proscene**.
