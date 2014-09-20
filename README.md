@@ -1,12 +1,12 @@
 proscene-experiments
 ====================
 
-proscene experiments conducted at [disi](disi.unal.edu.co)
+[Proscene](https://github.com/remixlab/proscene) experiments conducted at [disi](disi.unal.edu.co)
 
-Clone me at your sketchbook location:
+Clone this repository at your sketchbook location:
 
 ```sh
-$cd <my_skect_book>
+$cd <my_sketchbook>
 $git clone https://github.com/remixlab/proscene-experiments.git
 ```
 
