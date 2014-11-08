@@ -2,10 +2,11 @@ import remixlab.proscene.*;
 
 PShader RaysShader, colorShader;
 PGraphics RaysGraphics, SrcGraphics, colorGraphics;
-Scene RaysScene, SrcScene, colorScene;
+Scene SrcScene, colorScene;
 boolean original;
 color cols[];
 float posns[];
+
 
 public void setup() {
   size(700, 700, P2D);
@@ -80,4 +81,3 @@ private void drawGeometry(Scene scene) {
 void keyPressed() {
   original = !original;
 }
-

@@ -2,7 +2,7 @@ import remixlab.proscene.*;
 
 PShader VerticalShader, colorShader;
 PGraphics VerticalGraphics, SrcGraphics, colorGraphics;
-Scene VerticalScene, SrcScene, colorScene;
+Scene SrcScene, colorScene;
 boolean original;
 color cols[];
 float posns[];
