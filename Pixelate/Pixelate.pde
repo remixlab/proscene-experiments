@@ -1,6 +1,6 @@
 import remixlab.proscene.*;
 
-PShader PixelShader, colorShader;
+PShader PixelShader;
 PGraphics PixelGraphics, SrcGraphics, colorGraphics;
 Scene SrcScene, colorScene;
 boolean original;
@@ -81,4 +81,3 @@ private void drawGeometry(Scene scene) {
 void keyPressed() {
   original = !original;
 }
-

@@ -1,6 +1,6 @@
 import remixlab.proscene.*;
 
-PShader RaysShader, colorShader;
+PShader RaysShader;
 PGraphics RaysGraphics, SrcGraphics, colorGraphics;
 Scene SrcScene, colorScene;
 boolean original;

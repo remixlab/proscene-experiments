@@ -73,7 +73,8 @@ private void drawGeometry(Scene scene, boolean lights) {
   pg.beginDraw();
   scene.beginDraw();
   pg.background(0);
-  pg.fill(150);
+  //pg.fill(150);//original
+  pg.fill(150,0,150);
   pg.noStroke();
   if (lights)
     pg.lights();
@@ -90,4 +91,3 @@ private void drawGeometry(Scene scene, boolean lights) {
 void keyPressed() {
   depth = !depth;
 }
-
