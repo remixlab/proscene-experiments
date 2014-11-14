@@ -5,7 +5,7 @@ Scene scene;
 boolean original = true;
 color cols[];
 float posns[];
-Model[] models;
+InteractiveModel[] models;
 
 void setup() {
   size(350, 350, P3D);
@@ -21,11 +21,15 @@ void setup() {
   }
 
   scene = new Scene(this);
-  models = new Model[100];
+  models = new InteractiveModel[100];
 
   for (int i = 0; i < models.length; i++) {
-    models[i] = new Model(scene, drawBox());
+    models[i] = new InteractiveModel(scene, drawBox());
     models[i].translate(posns[3*i], posns[3*i+1], posns[3*i+2]);
+    pushStyle();
+    colorMode(HSB, 255);
+    models[i].shape().setFill(cols[i]);
+    popStyle();
   }
 
   scene.setRadius(1000);
@@ -39,19 +43,12 @@ void setup() {
 
 void draw() {
   background(0);
-  if (original) {
-    for (int i = 0; i < models.length; i++) {
-      //pushStyle saves picking and enables coloring
-      pushStyle();
-      colorMode(HSB, 255);
-      models[i].shape().setFill(cols[i]);
-      popStyle();
-    }
+  if (original)
     scene.drawModels();
-  } else {
+  else {
     scene.pg().shader(shader);
     scene.drawModels();
-    scene.pg().resetShader();
+    scene.pg().resetShader(); 
   }
 }
 
