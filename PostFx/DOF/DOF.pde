@@ -5,7 +5,7 @@ PGraphics srcPGraphics, depthPGraphics, dofPGraphics;
 Scene scene;
 color cols[];
 float posns[];
-InteractiveModel[] models;
+InteractiveModelFrame[] models;
 int mode = 2;
 
 void setup() {
@@ -21,10 +21,10 @@ void setup() {
 
   srcPGraphics = createGraphics(width, height, P3D);
   scene = new Scene(this, srcPGraphics);
-  models = new InteractiveModel[100];
+  models = new InteractiveModelFrame[100];
 
   for (int i = 0; i < models.length; i++) {
-    models[i] = new InteractiveModel(scene, boxShape());
+    models[i] = new InteractiveModelFrame(scene, boxShape());
     models[i].translate(posns[3*i], posns[3*i+1], posns[3*i+2]);
     //Wierdly enough color.HSB breaks picking
     //pushStyle saves picking and enables coloring

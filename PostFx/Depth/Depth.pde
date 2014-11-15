@@ -5,7 +5,7 @@ Scene scene;
 boolean original = true;
 color cols[];
 float posns[];
-InteractiveModel[] models;
+InteractiveModelFrame[] models;
 
 void setup() {
   size(350, 350, P3D);
@@ -21,10 +21,10 @@ void setup() {
   }
 
   scene = new Scene(this);
-  models = new InteractiveModel[100];
+  models = new InteractiveModelFrame[100];
 
   for (int i = 0; i < models.length; i++) {
-    models[i] = new InteractiveModel(scene, drawBox());
+    models[i] = new InteractiveModelFrame(scene, drawBox());
     models[i].translate(posns[3*i], posns[3*i+1], posns[3*i+2]);
     pushStyle();
     colorMode(HSB, 255);
