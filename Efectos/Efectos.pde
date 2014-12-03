@@ -1,3 +1,5 @@
+//Made by Ivan Castellanos
+
 import remixlab.proscene.*;
 
 PShader NoiseShader, KaleidoShader, RaysShader, DofShader, PixelShader, EdgeShader, colorShader, FxaaShader, HorizontalShader;
@@ -11,7 +13,7 @@ InteractiveModelFrame[] models;
 
 public void setup() {
   size(700, 700, P3D);
-  //colorMode(HSB, 255);
+  colorMode(HSB, 255);
   cols = new color[100];
   posns = new float[300];
   
@@ -19,7 +21,7 @@ public void setup() {
     posns[3*i]=random(-1000, 1000);
     posns[3*i+1]=random(-1000, 1000);
     posns[3*i+2]=random(-1000, 1000);
-    cols[i]= color(random(255), random(255), random(255));
+    cols[i]= color(255 * i / 100.0, 255, 255, 255);
   }
   
   SrcGraphics = createGraphics(width, height, P3D);
@@ -31,8 +33,6 @@ public void setup() {
   for (int i = 0; i < models.length; i++) {
     models[i] = new InteractiveModelFrame(SrcScene, boxShape());
     models[i].translate(posns[3*i], posns[3*i+1], posns[3*i+2]);
-    //Wierdly enough color.HSB breaks picking
-    //pushStyle saves picking and enables coloring
     pushStyle();
     colorMode(HSB, 255);
     models[i].shape().setFill(cols[i]);
@@ -41,9 +41,7 @@ public void setup() {
 
   SrcScene.setRadius(1000);
   SrcScene.showAll();
-    
-  //Declaration of PShader and PGraphics for the efects  
-    
+     
   colorShader = loadShader("colorfrag.glsl");
   colorShader.set("maxDepth", SrcScene.radius()*2);
   colorGraphics = createGraphics(width, height, P3D);
@@ -104,7 +102,7 @@ public void draw() {
   // 1. Draw into main buffer
   for (int i = 0; i < models.length; i++) 
     if (SrcScene.grabsAnyAgentInput(models[i]))
-      models[i].shape().setFill(color(255, 0, 0));
+      models[i].shape().setFill(color(255, 255, 255, 255));
     else {
       pushStyle();
       colorMode(HSB, 255);

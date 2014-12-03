@@ -1,3 +1,9 @@
+/*
+Based on ofxPostProcessing Effects
+Author: Neil Mendoza
+https://github.com/neilmendoza/ofxPostProcessing
+*/
+
 uniform sampler2D tex;
 uniform float xPixels;
 uniform float yPixels;

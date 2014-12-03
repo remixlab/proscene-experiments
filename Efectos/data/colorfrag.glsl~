@@ -1,9 +1,6 @@
 uniform float maxDepth;
-varying vec4 vertColor;
-varying vec4 vertTexCoord;
 
 void main() {
-  float depth = vertTexCoord.s;
-  gl_FragColor = vec4(vec3(1.0 - depth/maxDepth) , 1.0);  
-  //gl_FragColor = vec4((1.0 - depth/maxDepth) * vertColor.rgb, 1.0);
+  float depth = gl_FragCoord.z / gl_FragCoord.w;
+  gl_FragColor = vec4(vec3(1.0 - depth/maxDepth), 1.0);
 }

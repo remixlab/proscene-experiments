@@ -1,21 +1,25 @@
+//Made by Ivan Castellanos
+
 import remixlab.proscene.*;
 
-PShader XConvShader, YConvShader, colorShader;
-PGraphics BloomGraphics, SrcGraphics, colorGraphics, XConvGraphics;
-Scene BloomScene, SrcScene, colorScene;
+PShader BloomShader, XConvShader, YConvShader;
+PGraphics BloomGraphics, SrcGraphics, XConvGraphics, YConvGraphics;
+Scene SrcScene;
 boolean original;
 color cols[];
 float posns[], kernel[];
-int startTime;
+InteractiveModelFrame[] models;
+int numCubes;
 
 public void setup() {
-  size(700, 700, P2D);
+  size(700, 700, P3D);
   colorMode(HSB, 255);
-  cols = new color[100];
-  posns = new float[300];
+  numCubes = 100;
+  cols = new color[numCubes];
+  posns = new float[numCubes * 3];
   buildKernel(4.0);
   
-  for (int i = 0; i<100; i++){
+  for (int i = 0; i < numCubes; i++){
     posns[3*i]=random(-1000, 1000);
     posns[3*i+1]=random(-1000, 1000);
     posns[3*i+2]=random(-1000, 1000);
@@ -26,70 +30,81 @@ public void setup() {
   SrcScene = new Scene(this, SrcGraphics);
   SrcScene.setRadius(1000);
   SrcScene.showAll();
+  models = new InteractiveModelFrame[numCubes];
   
-  colorGraphics = createGraphics(width, height, P3D);
-  colorScene = new Scene(this, colorGraphics);
-  colorScene.setRadius(1000);
-  colorScene.showAll();
-  colorScene.setCamera(SrcScene.camera());
-  colorScene.disableMouseAgent();
-  colorScene.disableKeyboardAgent();
-    
-  XConvShader = loadShader("bloomfrag.glsl");//,"bloomvert.glsl");
-  YConvShader = loadShader("bloomfrag.glsl");//,"bloomvert.glsl");
+  for (int i = 0; i < models.length; i++) {
+    models[i] = new InteractiveModelFrame(SrcScene, Shape(i));
+    models[i].translate(posns[3*i], posns[3*i+1], posns[3*i+2]);
+    pushStyle();
+    models[i].shape().setFill(cols[i]);
+    popStyle();
+  }
   
-  XConvShader.set("imageIncrement", 0.001953125, 0.0);
+  XConvShader = loadShader("convfrag.glsl","convvert.glsl");
+  XConvShader.set("imageIncrement", 0.002953125, 0.0);
   XConvShader.set("kernel", kernel);
-  XConvShader.set("resolution", 1024, 1024);
- 
-  YConvShader.set("imageIncrement", 0.0, 0.001953125);
-  YConvShader.set("kernel", kernel);
-  YConvShader.set("resolution", 1024, 1024);
-  
+  XConvShader.set("resolution", width, height);
   XConvGraphics = createGraphics(width, height, P3D);
   XConvGraphics.shader(XConvShader);
   
+  YConvShader = loadShader("convfrag.glsl","convvert.glsl");
+  YConvShader.set("imageIncrement", 0.0, 0.002953125);
+  YConvShader.set("kernel", kernel);
+  YConvShader.set("resolution", width, height);
+  YConvGraphics = createGraphics(width, height, P3D);
+  YConvGraphics.shader(YConvShader);
+  
+  BloomShader = loadShader("bloom.glsl");
   BloomGraphics = createGraphics(width, height, P3D);
-  BloomGraphics.shader(YConvShader);
+  BloomGraphics.shader(BloomShader);
+   
   frameRate(1000);
 }
 
 public void draw() {
   background(0);
-  drawGeometry(SrcScene);
-  drawGeometry(colorScene);
-
+  PGraphics pg = SrcGraphics;
+  
+  for (int i = 0; i < models.length; i++) 
+    if (SrcScene.grabsAnyAgentInput(models[i]))
+      {
+        models[i].shape().setFill(color(255, 255, 255, 255));
+      }
+    else {
+      pushStyle();
+      colorMode(HSB, 255);
+      models[i].shape().setFill(cols[i]);
+      popStyle();
+    }
+    
+  pg.beginDraw();
+  SrcScene.beginDraw();
+  pg.background(0);
+  pg.lights();
+  SrcScene.drawModels();
+  SrcScene.endDraw();
+  pg.endDraw();
+  
+  XConvGraphics.beginDraw();
+  XConvShader.set("readTex", SrcScene.pg());
+  XConvGraphics.image(pg, 0, 0);
+  XConvGraphics.endDraw();
+    
+  YConvGraphics.beginDraw();
+  YConvShader.set("readTex", XConvGraphics);
+  YConvGraphics.image(pg, 0, 0);
+  YConvGraphics.endDraw();    
+    
+  BloomGraphics.beginDraw();
+  BloomShader.set("nuevoTex", YConvGraphics);
+  BloomGraphics.image(pg, 0, 0);
+  BloomGraphics.endDraw();    
+  
   if (original) {
-    image(colorScene.pg(), 0, 0);
-  } else {   
-    BloomGraphics.beginDraw();
-    XConvGraphics.beginDraw();
-    XConvShader.set("readTex", colorGraphics);
-    XConvGraphics.image(colorGraphics, 0, 0);
-    YConvShader.set("readTex", XConvGraphics);
-    BloomGraphics.image(XConvGraphics, 0, 0);
-    XConvGraphics.endDraw();  
-    BloomGraphics.endDraw();    
+    image(SrcScene.pg(), 0, 0);
+  } else {     
     image(BloomGraphics, 0, 0);
   }
-}
-
-private void drawGeometry(Scene scene) {
-  PGraphics pg = scene.pg();
-  pg.beginDraw();
-  scene.beginDraw();
-  pg.background(0);
-  pg.noStroke();
-  pg.lights();
-  for (int i = 0; i < 100; i++) {
-    pg.pushMatrix();
-    pg.fill(cols[i]);
-    pg.translate(posns[3*i], posns[3*i+1], posns[3*i+2]);
-    pg.box(60);
-    pg.popMatrix();
-  }
-  scene.endDraw();
-  pg.endDraw();
 }
 
 float gauss(float x, float sigma)
@@ -112,6 +127,16 @@ void buildKernel(float sigma)
   {
     kernel[ i ] /= sum;
   }
+}
+
+PShape Shape(int n) {
+  PShape fig;
+  if (n%2 == 0)
+    fig = createShape(BOX, 60);
+  else
+    fig = createShape(SPHERE, 30);
+  fig.setStroke(255);
+  return fig;
 }
 
 void keyPressed() {

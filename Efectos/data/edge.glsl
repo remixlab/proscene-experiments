@@ -1,15 +1,18 @@
+/*
+Based on ofxPostProcessing Effects
+Author: Neil Mendoza
+https://github.com/neilmendoza/ofxPostProcessing
+*/
+
 varying vec4 vertTexCoord;
 
 uniform sampler2D tex;
 uniform vec2 aspect;
-//uniform float hue;
-//uniform float saturation;
                                          
 vec2 texel = vec2(aspect.x, aspect.y);
 
 mat3 G[9];
 
-// hard coded matrix values
 mat3 G0 = mat3( 0.5/sqrt(2.0), 0, -0.5/sqrt(2.0), 0.5, 0, -0.5, 0.5/sqrt(2.0), 0, -0.5/sqrt(2.0) );
 mat3 G1 = mat3( 0.5/sqrt(2.0), 0.5, 0.5/sqrt(2.0), 0, 0, 0, -0.5/sqrt(2.0), -0.5, -0.5/sqrt(2.0) );
 mat3 G2 = mat3( 0, -0.5/sqrt(2.0), 0.5, 0.5/sqrt(2.0), 0, -0.5/sqrt(2.0), -0.5, 0.5/sqrt(2.0), 0 );
@@ -19,9 +22,7 @@ mat3 G5 = mat3( -0.5, 0, 0.5, 0, 0, 0, 0.5, 0, -0.5 );
 mat3 G6 = mat3( 1.0/6.0, -1.0/3.0, 1.0/6.0, -1.0/3.0, 2.0/3.0, -1.0/3.0, 1.0/6.0, -1.0/3.0, 1.0/6.0 );
 mat3 G7 = mat3( -1.0/3.0, 1.0/6.0, -1.0/3.0, 1.0/6.0, 2.0/3.0, 1.0/6.0, -1.0/3.0, 1.0/6.0, -1.0/3.0);
 mat3 G8 = mat3( 1.0/3.0, 1.0/3.0, 1.0/3.0, 1.0/3.0, 1.0/3.0, 1.0/3.0, 1.0/3.0, 1.0/3.0, 1.0/3.0 );
-            
-//vec3 hsv(float h,float s,float v) { return mix(vec3(1.0),clamp((abs(fract(h+vec3(3.0,2.0,1.0)/3.0)*6.0-3.0)-1.0),0.0,1.0),s)*v; }
-                                         
+                                                  
 void main(void)
 {
 	G[0] = G0;
@@ -38,7 +39,6 @@ void main(void)
         float cnv[9];
         vec3 sample;
             
-        /* fetch the 3x3 neighbourhood and use the RGB vector's length as intensity value */
         for (float i=0.0; i<3.0; i++)
         {
 		for (float j=0.0; j<3.0; j++)
@@ -48,7 +48,6 @@ void main(void)
 		}
 	}
 
-	/* calculate the convolution values for all the masks */
 	for (int i=0; i<9; i++)
 	{
 		float dp3 = dot(G[i][0], I[0]) + dot(G[i][1], I[1]) + dot(G[i][2], I[2]);

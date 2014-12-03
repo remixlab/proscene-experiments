@@ -1,11 +1,17 @@
+/*
+Based on ofxPostProcessing Effects
+Author: Neil Mendoza
+https://github.com/neilmendoza/ofxPostProcessing
+*/
+
 varying vec4 vertexture;
 varying vec4 vertTexCoord;
 
 uniform sampler2D tex;
 uniform sampler2D tDepth;
 	    
-uniform float maxBlur; // max blur amount
-uniform float aperture; // aperture - bigger values for shallower depth of field
+uniform float maxBlur; 
+uniform float aperture;
 
 uniform float focus;
 uniform float aspect;
