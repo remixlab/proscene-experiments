@@ -1,9 +1,3 @@
-/*
-Based on ofxPostProcessing Effects
-Author: Neil Mendoza
-https://github.com/neilmendoza/ofxPostProcessing
-*/
-
 #define SAMPLER_TYPE sampler2D
 #define TEXTURE_FN texture2D
 

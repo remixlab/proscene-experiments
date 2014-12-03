@@ -1,7 +1,12 @@
+/*
+Based on ofxPostProcessing Effects
+Author: Neil Mendoza
+https://github.com/neilmendoza/ofxPostProcessing
+*/
+
 uniform sampler2D texture;
 uniform sampler2D nuevoTex;
 varying vec4 vertTexCoord;
-//varying vec2 vTexCoord;
 
 void main(){
 	vec4 colorOriginal = vec4(0.0, 0.0, 0.0, 0.0);

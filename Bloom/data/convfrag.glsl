@@ -1,9 +1,3 @@
-/*
-Based on ofxPostProcessing Effects
-Author: Neil Mendoza
-https://github.com/neilmendoza/ofxPostProcessing
-*/
-
 #define KERNEL_SIZE 25
 
 uniform float kernel[KERNEL_SIZE];

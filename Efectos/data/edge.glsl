@@ -1,9 +1,3 @@
-/*
-Based on ofxPostProcessing Effects
-Author: Neil Mendoza
-https://github.com/neilmendoza/ofxPostProcessing
-*/
-
 varying vec4 vertTexCoord;
 
 uniform sampler2D tex;

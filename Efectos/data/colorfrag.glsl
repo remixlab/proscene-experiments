@@ -1,9 +1,3 @@
-/*
-Based on ofxPostProcessing Effects
-Author: Neil Mendoza
-https://github.com/neilmendoza/ofxPostProcessing
-*/
-
 uniform float maxDepth;
 
 void main() {

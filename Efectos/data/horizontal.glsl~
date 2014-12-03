@@ -1,3 +1,8 @@
+/*
+Based on ofxPostProcessing Effects
+https://github.com/neilmendoza/ofxPostProcessing
+*/
+
 uniform sampler2D tDiffuse;
 uniform float h;
 uniform float r;

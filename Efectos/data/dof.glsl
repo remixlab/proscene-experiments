@@ -1,9 +1,3 @@
-/*
-Based on ofxPostProcessing Effects
-Author: Neil Mendoza
-https://github.com/neilmendoza/ofxPostProcessing
-*/
-
 varying vec4 vertexture;
 varying vec4 vertTexCoord;
 
