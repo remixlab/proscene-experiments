@@ -25,7 +25,7 @@ import remixlab.dandelion.core.*;
 import remixlab.dandelion.geom.*;
 
 Scene scene;
-Model models[];
+InteractiveModelFrame models[];
 int colors[];
 boolean[] collisions_s;
 boolean[] collisions_c;
@@ -45,7 +45,7 @@ void setup() {
   size(640, 360, renderer);
   //Scene instantiation
   scene = new Scene(this);
-  models = new Model[50];
+  models = new InteractiveModelFrame[50];
   colors = new int[models.length];
   spheres_w = new float[models.length][4];
   spheres_ex = new float[models.length][4];
@@ -54,7 +54,7 @@ void setup() {
   collisions_s = new boolean[models.length];
   
   for(int i = 0; i < models.length; i++){
-    models[i] = new Model(scene, drawRandomPolygon(10));
+    models[i] = new InteractiveModelFrame(scene, drawRandomPolygon(10));
     models[i].translate(random(-100,100),random(-100,100),random(-50,50));
     colors[i] = color(random(255),random(255),random(255));
     getSphere(i);
@@ -74,7 +74,7 @@ void mainDraw(){
       models[i].shape().setStroke(c);
       models[i].shape().setFill(c);
     }
-    models[i].drawShape();
+    models[i].draw();
   }
 }
 
@@ -102,7 +102,7 @@ PShape drawRandomPolygon(int num_vertex){
 
 //draw a rect bound
 public void drawCube(int number){
-  Model m = models[number];
+  InteractiveModelFrame m = models[number];
   //translate to frame pos
   if(collisions_c[number]){
     stroke(color(255,0,0));
@@ -125,7 +125,7 @@ public void drawCube(int number){
 
 //draw a sphere bound
 public void drawSphere(int number){
-  Model m = models[number];
+  InteractiveModelFrame m = models[number];
   if(collisions_s[number]){
     stroke(color(255,0,0));
     fill(color(255,0,0,60));
@@ -245,7 +245,7 @@ public Vec[] getCube(PShape shape) {
   return v;
 }
 
-public Vec[][] getFaces(Model m){
+public Vec[][] getFaces(InteractiveModelFrame m){
   Vec[] cub = getCube(m.shape());
   Vec[][] faces = new Vec[6][4];
   faces[0][0] = m.inverseCoordinatesOf(new Vec(cub[0].x(), cub[0].y(), cub[0].z()));
@@ -283,7 +283,7 @@ public Vec[][] getFaces(Model m){
 
 //Is used the Separated Axis Theorem
 public void checkCubeCollisions(int number, int candidate){
-  Model player = models[number];
+  InteractiveModelFrame player = models[number];
   collisions_c[number] = false;
   //check with each Face
   Vec[][] p_faces = getFaces(player);
@@ -578,7 +578,7 @@ float det(float m11, float m12, float m13,
 //---------------------------------------
 //---------------------------------------
 public void checkSphereCollisions(int number){
-  Model player = models[number];
+  InteractiveModelFrame player = models[number];
   collisions_s[number] = false;
   //check with each obj
   for(int i = 0; i < models.length;i++){
