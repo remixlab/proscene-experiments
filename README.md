@@ -14,8 +14,10 @@ To contribute please create a [pull request](https://help.github.com/articles/cr
 
 ## Ideas
 
-+ Allow to load aribitrary scenes (Depth and DOF).
-+ Use PShapes to burst performance (Depth and DOF).
++ ~~Allow to load aribitrary scenes (Depth and DOF).~~
++ ~~Use PShapes to burst performance (Depth and DOF).~~
 + Use the scene `pixelDepth(pixel)` method to find the focus target in DOF (requires version >= 2.0.5).
-+ Adapt the other [openframeworks](http://www.openframeworks.cc/) addons found at the [ofxPostProcessing repo](https://github.com/neilmendoza/ofxPostProcessing)
-to **Processing** using **Proscene**.
++ ~~Adapt the other [openframeworks](http://www.openframeworks.cc/) addons found at the [ofxPostProcessing repo](https://github.com/neilmendoza/ofxPostProcessing)
+to **Processing** using **Proscene**.~~
++ Decide future of Models: Collision detection, visibility culling...
++ Implement various possible "system control" applications.
