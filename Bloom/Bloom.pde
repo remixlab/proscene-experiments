@@ -66,7 +66,7 @@ public void draw() {
   PGraphics pg = SrcGraphics;
   
   for (int i = 0; i < models.length; i++) 
-    if (SrcScene.grabsAnyAgentInput(models[i]))
+    if (SrcScene.motionAgent().isInputGrabber(models[i]))
       {
         models[i].shape().setFill(color(255, 255, 255, 255));
       }

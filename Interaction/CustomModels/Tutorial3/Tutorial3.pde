@@ -65,26 +65,6 @@ public enum ClickAction implements Action<GlobalAction> {
   }
 }
 
-public enum WheeledAction implements Action<GlobalAction> {
-  CHANGE_SHAPE(GlobalAction.CHANGE_SHAPE);
-
-  @Override
-  public GlobalAction referenceAction() {
-    return act;
-  }
-
-  @Override
-  public String description() {
-    return "A simple click action";
-  }
-
-  GlobalAction  act;
-
-  WheeledAction(GlobalAction a) {
-    act = a;
-  }
-}
-
 public enum MotionAction implements Action<GlobalAction> {
   CHANGE_SHAPE(GlobalAction.CHANGE_SHAPE);
 
@@ -130,6 +110,19 @@ public class ModelEllipse extends ActionModelObject<GlobalAction> {
   public ModelEllipse(Scene scn) {
     super(scn);      
     update();
+  }
+  
+  @Override
+  public void performInteraction(DOF1Event event) {
+    switch(referenceAction()) {
+    case CHANGE_SHAPE:
+      radiusX += event.x()*5;
+      update();
+      break;
+    default:
+      println("Action not implemented");
+      break;
+    }
   }
 
   @Override
@@ -206,6 +199,7 @@ public void setup() {
   ctrlScene = new Scene(this, ctrlCanvas, oX, oY);
   mouseBranch = new CustomMouseBranch(ctrlScene.mouseAgent(), "my_mouse");
   mouseBranch.clickProfile().setBinding(ctrlScene.mouseAgent().buttonModifiersFix(RIGHT), RIGHT, 1, ClickAction.CHANGE_COLOR);
+  mouseBranch.profile().setBinding(MouseAgent.WHEEL_ID, MotionAction.CHANGE_SHAPE);
   
   keyBranch = new CustomKeyboardBranch(ctrlScene.keyboardAgent(), "my_keyboard");
   ctrlScene.setAxesVisualHint(false);

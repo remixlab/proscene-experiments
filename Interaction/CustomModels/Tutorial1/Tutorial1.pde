@@ -16,7 +16,8 @@ public class ModelEllipse extends InteractiveModelFrame {
   // /**
   @Override
   public void performCustomAction(DOF1Event event) {
-    shape().setFill(color(random(0, 255), random(0, 255), random(0, 255), 125));
+    colour = color(color(random(0, 255), random(0, 255), random(0, 255), 125));
+    update();
   }
   
   @Override

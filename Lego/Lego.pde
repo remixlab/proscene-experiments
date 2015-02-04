@@ -496,7 +496,7 @@ void traFalse(){
 void keyPressed(KeyEvent e) {
    if( e.getKeyCode()== LEFT) {
      for (ChipFrame chip : chips) {
-      if (scene.grabsAnyAgentInput(chip)){
+      if (scene.motionAgent().isInputGrabber(chip)){
         int aux = chip.sizeX;
         chip.sizeX = chip.sizeY;
         chip.sizeY = aux;
@@ -514,7 +514,7 @@ void keyPressed(KeyEvent e) {
      }
    } else if( e.getKeyCode()== RIGHT) {
      for (ChipFrame chip : chips) {
-      if (scene.grabsAnyAgentInput(chip)){
+      if (scene.motionAgent().isInputGrabber(chip)){
         int aux = chip.sizeX;
         chip.sizeX = chip.sizeY;
         chip.sizeY = aux;
@@ -621,7 +621,7 @@ boolean validateChips(boolean reset) {
 
 void updatePickedModelColor() {
   for (ChipFrame chip : chips) {
-    if (scene.grabsAnyAgentInput(chip))
+    if (scene.motionAgent().isInputGrabber(chip))
       chip.shape().setFill(color(255, 229, 235));
     else{
       chip.shape().setFill(color(chip.colorP[0], chip.colorP[1], chip.colorP[2]));
