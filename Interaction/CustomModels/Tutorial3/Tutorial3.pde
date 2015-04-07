@@ -103,7 +103,7 @@ public class CustomMouseBranch extends MotionBranch<GlobalAction, MotionProfile<
 }
 
 // Final tutorial would make much more sense when having lots of actions and multiple agents
-public class ModelEllipse extends ActionModelObject<GlobalAction> {
+public class ModelEllipse extends InteractiveModelObject<GlobalAction> {
   float  radiusX  = 30, radiusY = 30;
   int    colour  = color(255, 0, 0);
 
