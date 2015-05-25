@@ -24,7 +24,7 @@ Scene scene;
 boolean enforced = false;  
 boolean grabsInput;
 
-KeyboardAction keyAction;
+SceneAction keyAction;
 DOF2Action mouseAction;
 DOF2Event prevEvent, event;
 DOF2Event gEvent, prevGenEvent;
@@ -92,7 +92,7 @@ public void mouseMoved() {
 public void mouseDragged() {
   if (!scene.isMotionAgentEnabled()) {
     event = new DOF2Event(prevEvent, (float) mouseX, (float) mouseY);
-    scene.inputHandler().enqueueEventTuple(new EventGrabberTuple(event, grabsInput ? iFrame : scene.eye().frame(), mouseAction));
+    scene.inputHandler().enqueueEventTuple(new EventGrabberTuple(event, grabsInput ? iFrame : (InteractiveFrame)scene.eye().frame(), mouseAction));
     prevEvent = event.get();
   }
 }
@@ -102,10 +102,11 @@ public void keyPressed() {
   if (!scene.isKeyboardAgentEnabled()) {
     if (key == 'a' || key == 'g') {
       if (key == 'a')
-        keyAction = KeyboardAction.TOGGLE_GRID_VISUAL_HINT;
+        keyAction = SceneAction.TOGGLE_GRID_VISUAL_HINT;
       if (key == 'g')
-        keyAction = KeyboardAction.TOGGLE_AXES_VISUAL_HINT;
-      kEvent = new KeyboardEvent(key);
+        keyAction = SceneAction.TOGGLE_AXES_VISUAL_HINT;
+        //TODO restore pending until keys(char) are back!
+      //kEvent = new KeyboardEvent(key);
       scene.inputHandler().enqueueEventTuple(new EventGrabberTuple(kEvent, scene, keyAction));
     }
   }

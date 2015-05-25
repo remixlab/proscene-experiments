@@ -69,6 +69,21 @@ public class GrabberEllipse extends GrabberObject {
   }
   
   @Override
+  public boolean checkIfGrabsInput(ClickEvent event) {
+    float x = event.x() - oX;
+    float y = event.y() - oY;
+    return(pow((x - center.x), 2)/pow(radiusX, 2) + pow((y - center.y), 2)/pow(radiusY, 2) <= 1);
+  }
+  
+  @Override
+  public void performInteraction(BogusEvent event) {
+    if(event == null)
+      println("null event");
+    else
+      super.performInteraction(event);
+  }
+  
+  @Override
   public void performInteraction(DOF2Event event) {
     if( event.id() != MotionEvent.NO_ID ) {
       radiusX += event.dx();
@@ -105,6 +120,7 @@ void setup() {
 
   e = new GrabberEllipse(ctrlCanvas, new PVector(w/2, h/2), 30);
   scene.mouseAgent().addGrabber(e);
+  //scene.mouseAgent().setPickingMode(MouseAgent.PickingMode.CLICK);
 }
 
 void draw() {

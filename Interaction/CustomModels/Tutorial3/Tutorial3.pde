@@ -2,7 +2,7 @@
  * Application Control.
  * by Jean Pierre Charalambos.
  * 
- * This demo controls the shape and color of the scene torus using and a custom mouse agent.
+ * This demo controls the shape and color of the scene torus using and a custom mouse agent. //<>//
  * 
  * Click and drag the ellipse with the left mouse to control the torus color and shape.
  * Press ' ' (the spacebar) to toggle the application canvas aid.
@@ -11,9 +11,11 @@
 
 import remixlab.bias.core.*;
 import remixlab.bias.event.*;
+import remixlab.bias.event.shortcut.*;
 import remixlab.bias.branch.*;
 import remixlab.bias.branch.profile.*;
-import remixlab.dandelion.agent.KeyboardAgent;
+import remixlab.dandelion.geom.*;
+import remixlab.dandelion.agent.*;
 import remixlab.proscene.*;
 
 public enum GlobalAction {
@@ -85,20 +87,21 @@ public enum MotionAction implements Action<GlobalAction> {
   }
 }
 
-public class CustomKeyboardBranch extends KeyboardBranch<GlobalAction, KeyboardProfile<KeyAction>> {
+public class CustomKeyboardBranch extends KeyboardBranch<GlobalAction, KeyAction> {
   public CustomKeyboardBranch(KeyboardAgent parent, String n) {
-    super(new KeyboardProfile<KeyAction>(), parent, n);
-    keyboardProfile().setBinding('b', KeyAction.BLUE);
-    keyboardProfile().setBinding('r', KeyAction.RED);
+    super(parent, n);
+    //b
+    keyboardProfile().setBinding(new KeyboardShortcut(66), KeyAction.BLUE);
+    //r
+    keyboardProfile().setBinding(new KeyboardShortcut(82), KeyAction.RED);
   }
 }
 
-public class CustomMouseBranch extends MotionBranch<GlobalAction, MotionProfile<MotionAction>, ClickProfile<ClickAction>> {
+public class CustomMouseBranch extends MotionBranch<GlobalAction, MotionAction, ClickAction> {
   public CustomMouseBranch(MouseAgent parent, String n) {
-    super(new MotionProfile<MotionAction>(), 
-    new ClickProfile<ClickAction>(), parent, n);
-    clickProfile().setBinding(LEFT, 1, ClickAction.CHANGE_COLOR);
-    motionProfile().setBinding(parent.buttonModifiersFix(RIGHT), RIGHT, MotionAction.CHANGE_SHAPE);
+    super(parent, n);
+    clickProfile().setBinding(new ClickShortcut(LEFT, 1), ClickAction.CHANGE_COLOR);
+    motionProfile().setBinding(new MotionShortcut(RIGHT), MotionAction.CHANGE_SHAPE);
   }
 }
 
@@ -116,7 +119,7 @@ public class ModelEllipse extends InteractiveModelObject<GlobalAction> {
   public void performInteraction(DOF1Event event) {
     switch(referenceAction()) {
     case CHANGE_SHAPE:
-      radiusX += event.x()*5;
+      radiusX += event.dx()*5;
       update();
       break;
     default:
@@ -198,8 +201,7 @@ public void setup() {
   ctrlCanvas = createGraphics(w, h, P2D);
   ctrlScene = new Scene(this, ctrlCanvas, oX, oY);
   mouseBranch = new CustomMouseBranch(ctrlScene.mouseAgent(), "my_mouse");
-  mouseBranch.clickProfile().setBinding(ctrlScene.mouseAgent().buttonModifiersFix(RIGHT), RIGHT, 1, ClickAction.CHANGE_COLOR);
-  mouseBranch.profile().setBinding(MouseAgent.WHEEL_ID, MotionAction.CHANGE_SHAPE);
+  mouseBranch.profile().setBinding(new MotionShortcut(MouseAgent.WHEEL_ID), MotionAction.CHANGE_SHAPE);
   
   keyBranch = new CustomKeyboardBranch(ctrlScene.keyboardAgent(), "my_keyboard");
   ctrlScene.setAxesVisualHint(false);

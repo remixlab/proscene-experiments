@@ -48,7 +48,7 @@ public void setup() {
   repere=new InteractiveFrame(scene);
 
   ///FRAME RATE///
-  frameRate(1000000);
+  frameRate(100);
 
   ///INPUT SETUP///
   setExoticCustomization();
@@ -531,11 +531,14 @@ public void setExoticCustomization() {
   ///INTERACTIVE FRAME///
   scene.mouseAgent().setButtonBinding(Target.FRAME, LEFT, DOF2Action.TRANSLATE);
   scene.mouseAgent().setButtonBinding(Target.FRAME, CENTER, DOF2Action.SCALE);
-  scene.mouseAgent().setWheelBinding(Target.FRAME, DOF1Action.ZOOM);
+  scene.mouseAgent().setWheelBinding(Target.FRAME, DOF1Action.TRANSLATE_Z);
   scene.mouseAgent().setButtonBinding(Target.FRAME, RIGHT, null);
   ///KEYBOARD///
+  //TODO restore pending until keys(char) are back!
+  /*
   scene.setKeyboardShortcut('S', null);
   scene.setKeyboardShortcut('g', KeyboardAction.TOGGLE_AXES_VISUAL_HINT);
+  */
 }
 
 public void keyPressed() {

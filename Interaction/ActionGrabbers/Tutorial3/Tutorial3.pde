@@ -11,6 +11,7 @@
 
 import remixlab.bias.core.*;
 import remixlab.bias.event.*;
+import remixlab.bias.event.shortcut.*;
 import remixlab.bias.branch.*;
 import remixlab.bias.branch.profile.*;
 import remixlab.dandelion.geom.*;
@@ -66,26 +67,6 @@ public enum ClickAction implements Action<GlobalAction> {
   }
 }
 
-public enum WheeledAction implements Action<GlobalAction> {
-  CHANGE_SHAPE(GlobalAction.CHANGE_SHAPE);
-
-  @Override
-  public GlobalAction referenceAction() {
-    return act;
-  }
-
-  @Override
-  public String description() {
-    return "A simple click action";
-  }
-
-  GlobalAction  act;
-
-  WheeledAction(GlobalAction a) {
-    act = a;
-  }
-}
-
 public enum MotionAction implements Action<GlobalAction> {
   CHANGE_SHAPE(GlobalAction.CHANGE_SHAPE);
 
@@ -102,29 +83,30 @@ public enum MotionAction implements Action<GlobalAction> {
   GlobalAction  act;
 
   MotionAction(GlobalAction a) {
-    act = a;
+    act = a; //<>//
   }
 }
 
-public class CustomKeyboardBranch extends KeyboardBranch<GlobalAction, KeyboardProfile<KeyAction>> {
+public class CustomKeyboardBranch extends KeyboardBranch<GlobalAction, KeyAction> {
   public CustomKeyboardBranch(KeyboardAgent parent, String n) {
-    super(new KeyboardProfile<KeyAction>(), parent, n);
-    keyboardProfile().setBinding('b', KeyAction.BLUE);
-    keyboardProfile().setBinding('r', KeyAction.RED);
+    super(parent, n);
+    //b
+    keyboardProfile().setBinding(new KeyboardShortcut(66), KeyAction.BLUE); //<>//
+    //r
+    keyboardProfile().setBinding(new KeyboardShortcut(82), KeyAction.RED);
   }
 }
 
-public class CustomMouseBranch extends MotionBranch<GlobalAction, MotionProfile<MotionAction>, ClickProfile<ClickAction>> {
+public class CustomMouseBranch extends MotionBranch<GlobalAction, MotionAction, ClickAction> {
   public CustomMouseBranch(MouseAgent parent, String n) {
-    super(new MotionProfile<MotionAction>(), 
-    new ClickProfile<ClickAction>(), parent, n);
-    clickProfile().setBinding(LEFT, 1, ClickAction.CHANGE_COLOR);
-    motionProfile().setBinding(parent.buttonModifiersFix(RIGHT), RIGHT, MotionAction.CHANGE_SHAPE);
+    super(parent, n);
+    clickProfile().setBinding(new ClickShortcut(LEFT, 1), ClickAction.CHANGE_COLOR);
+    motionProfile().setBinding(new MotionShortcut(RIGHT), MotionAction.CHANGE_SHAPE);
   }
 }
 
 // Final tutorial would make much more sense when having lots of actions and multiple agents
-public class ActionGrabberEllipse extends ActionGrabberObject<GlobalAction> {
+public class ActionGrabberEllipse extends InteractiveGrabberObject<GlobalAction> {
   PGraphics pg;
   public float radiusX, radiusY;
   public PVector center;
@@ -203,6 +185,20 @@ public class ActionGrabberEllipse extends ActionGrabberObject<GlobalAction> {
       break;
     }
   }
+  
+  @Override
+  public void performInteraction(DOF1Event event) {
+     //TODO pending
+    if(referenceAction() == null) return;
+    switch(referenceAction()) {
+    case CHANGE_SHAPE:
+      radiusX += event.dx()*5;
+      break;
+    default:
+      println("Action not implemented");
+      break;
+    }
+  }
 
   @Override
   public void performInteraction(ClickEvent event) {
@@ -251,12 +247,13 @@ public void setup() {
 
   canvas = createGraphics(640, 360, P3D);  
   scene = new Scene(this, canvas);
-  scene.addGraphicsHandler(this, "drawing");
 
   ctrlCanvas = createGraphics(w, h, P2D);
   ctrlScene = new Scene(this, ctrlCanvas, oX, oY);
   mouseBranch = new CustomMouseBranch(ctrlScene.mouseAgent(), "my_mouse");
-  mouseBranch.clickProfile().setBinding(ctrlScene.mouseAgent().buttonModifiersFix(RIGHT), RIGHT, 1, ClickAction.CHANGE_COLOR);
+  mouseBranch.clickProfile().setBinding(new ClickShortcut(RIGHT, 1), ClickAction.CHANGE_COLOR);
+  
+  mouseBranch.profile().setBinding(new MotionShortcut(MouseAgent.WHEEL_ID), MotionAction.CHANGE_SHAPE);
   
   keyBranch = new CustomKeyboardBranch(ctrlScene.keyboardAgent(), "my_keyboard");
   ctrlScene.setAxesVisualHint(false);
