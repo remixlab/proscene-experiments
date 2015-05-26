@@ -533,12 +533,9 @@ public void setExoticCustomization() {
   scene.mouseAgent().setButtonBinding(Target.FRAME, CENTER, DOF2Action.SCALE);
   scene.mouseAgent().setWheelBinding(Target.FRAME, DOF1Action.TRANSLATE_Z);
   scene.mouseAgent().setButtonBinding(Target.FRAME, RIGHT, null);
-  ///KEYBOARD///
-  //TODO restore pending until keys(char) are back!
-  /*
-  scene.setKeyboardShortcut('S', null);
-  scene.setKeyboardShortcut('g', KeyboardAction.TOGGLE_AXES_VISUAL_HINT);
-  */
+  ///KEYBOARD//
+  scene.keyboardAgent().setBinding('s', null);
+  scene.keyboardAgent().setBinding('g', SceneAction.TOGGLE_AXES_VISUAL_HINT);
 }
 
 public void keyPressed() {

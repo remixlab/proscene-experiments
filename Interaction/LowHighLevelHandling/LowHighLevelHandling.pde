@@ -102,11 +102,10 @@ public void keyPressed() {
   if (!scene.isKeyboardAgentEnabled()) {
     if (key == 'a' || key == 'g') {
       if (key == 'a')
-        keyAction = SceneAction.TOGGLE_GRID_VISUAL_HINT;
+        keyAction = SceneAction.MOVE_RIGHT;
       if (key == 'g')
-        keyAction = SceneAction.TOGGLE_AXES_VISUAL_HINT;
-        //TODO restore pending until keys(char) are back!
-      //kEvent = new KeyboardEvent(key);
+        keyAction = SceneAction.MOVE_LEFT;
+      kEvent = new KeyboardEvent(java.awt.event.KeyEvent.getExtendedKeyCodeForChar(key));
       scene.inputHandler().enqueueEventTuple(new EventGrabberTuple(kEvent, scene, keyAction));
     }
   }

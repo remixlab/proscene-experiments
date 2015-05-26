@@ -91,9 +91,9 @@ public class CustomKeyboardBranch extends KeyboardBranch<GlobalAction, KeyAction
   public CustomKeyboardBranch(KeyboardAgent parent, String n) {
     super(parent, n);
     //b
-    keyboardProfile().setBinding(new KeyboardShortcut(66), KeyAction.BLUE); //<>//
+    keyboardProfile().setBinding(new KeyboardShortcut(java.awt.event.KeyEvent.getExtendedKeyCodeForChar('b')), KeyAction.BLUE); //<>//
     //r
-    keyboardProfile().setBinding(new KeyboardShortcut(82), KeyAction.RED);
+    keyboardProfile().setBinding(new KeyboardShortcut(java.awt.event.KeyEvent.getExtendedKeyCodeForChar('r')), KeyAction.RED);
   }
 }
 
@@ -188,8 +188,6 @@ public class ActionGrabberEllipse extends InteractiveGrabberObject<GlobalAction>
   
   @Override
   public void performInteraction(DOF1Event event) {
-     //TODO pending
-    if(referenceAction() == null) return;
     switch(referenceAction()) {
     case CHANGE_SHAPE:
       radiusX += event.dx()*5;
