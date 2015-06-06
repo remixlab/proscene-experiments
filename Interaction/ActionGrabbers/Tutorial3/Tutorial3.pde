@@ -13,7 +13,6 @@ import remixlab.bias.core.*;
 import remixlab.bias.event.*;
 import remixlab.bias.event.shortcut.*;
 import remixlab.bias.branch.*;
-import remixlab.bias.branch.profile.*;
 import remixlab.dandelion.geom.*;
 import remixlab.dandelion.agent.*;
 import remixlab.proscene.*;
@@ -88,20 +87,20 @@ public enum MotionAction implements Action<GlobalAction> {
 }
 
 public class CustomKeyboardBranch extends KeyboardBranch<GlobalAction, KeyAction> {
-  public CustomKeyboardBranch(KeyboardAgent parent, String n) {
-    super(parent, n);
-    //b
-    keyboardProfile().setBinding(new KeyboardShortcut(java.awt.event.KeyEvent.getExtendedKeyCodeForChar('b')), KeyAction.BLUE); //<>//
-    //r
-    keyboardProfile().setBinding(new KeyboardShortcut(java.awt.event.KeyEvent.getExtendedKeyCodeForChar('r')), KeyAction.RED);
+  public CustomKeyboardBranch(KeyboardAgent keyAgent, String n) {
+    super(keyAgent, n);
+    setBinding('b', KeyAction.BLUE); //<>//
+    setBinding('r', KeyAction.RED);
   }
 }
 
 public class CustomMouseBranch extends MotionBranch<GlobalAction, MotionAction, ClickAction> {
   public CustomMouseBranch(MouseAgent parent, String n) {
     super(parent, n);
-    clickProfile().setBinding(new ClickShortcut(LEFT, 1), ClickAction.CHANGE_COLOR);
-    motionProfile().setBinding(new MotionShortcut(RIGHT), MotionAction.CHANGE_SHAPE);
+    setClickBinding(LEFT, 1, ClickAction.CHANGE_COLOR);
+    setMotionBinding(MouseAgent.RIGHT_ID, MotionAction.CHANGE_SHAPE);
+    //clickProfile().setBinding(new ClickShortcut(LEFT, 1), ClickAction.CHANGE_COLOR);
+    //motionProfile().setBinding(new MotionShortcut(RIGHT), MotionAction.CHANGE_SHAPE);
   }
 }
 
@@ -250,8 +249,8 @@ public void setup() {
   ctrlScene = new Scene(this, ctrlCanvas, oX, oY);
   mouseBranch = new CustomMouseBranch(ctrlScene.mouseAgent(), "my_mouse");
   mouseBranch.clickProfile().setBinding(new ClickShortcut(RIGHT, 1), ClickAction.CHANGE_COLOR);
-  
-  mouseBranch.profile().setBinding(new MotionShortcut(MouseAgent.WHEEL_ID), MotionAction.CHANGE_SHAPE);
+  //mouseBranch.profile().setBinding(new MotionShortcut(MouseAgent.WHEEL_ID), MotionAction.CHANGE_SHAPE);
+  mouseBranch.setMotionBinding(MouseAgent.WHEEL_ID, MotionAction.CHANGE_SHAPE);
   
   keyBranch = new CustomKeyboardBranch(ctrlScene.keyboardAgent(), "my_keyboard");
   ctrlScene.setAxesVisualHint(false);
