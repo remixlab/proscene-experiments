@@ -1,6 +1,6 @@
 import remixlab.bias.core.*;
 import remixlab.bias.event.*;
-import remixlab.proscene.*;
+import remixlab.proscene.*; //<>//
 
 public class GrabberEllipse extends GrabberObject {
   PGraphics pg;
@@ -64,7 +64,7 @@ public class GrabberEllipse extends GrabberObject {
   @Override
   public boolean checkIfGrabsInput(DOF2Event event) {
     float x = event.x() - oX;
-    float y = event.y() - oY;
+    float y = event.y() - oY; //<>//
     return(pow((x - center.x), 2)/pow(radiusX, 2) + pow((y - center.y), 2)/pow(radiusY, 2) <= 1);
   }
   
@@ -73,15 +73,7 @@ public class GrabberEllipse extends GrabberObject {
     float x = event.x() - oX;
     float y = event.y() - oY;
     return(pow((x - center.x), 2)/pow(radiusX, 2) + pow((y - center.y), 2)/pow(radiusY, 2) <= 1);
-  }
-  
-  @Override
-  public void performInteraction(BogusEvent event) {
-    if(event == null)
-      println("null event");
-    else
-      super.performInteraction(event);
-  }
+  } //<>//
   
   @Override
   public void performInteraction(DOF2Event event) {

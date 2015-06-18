@@ -85,25 +85,7 @@ public enum MotionAction implements Action<GlobalAction> {
     act = a; //<>//
   }
 }
-
-public class CustomKeyboardBranch extends KeyboardBranch<GlobalAction, KeyAction> {
-  public CustomKeyboardBranch(KeyboardAgent keyAgent, String n) {
-    super(keyAgent, n);
-    setBinding('b', KeyAction.BLUE); //<>//
-    setBinding('r', KeyAction.RED);
-  }
-}
-
-public class CustomMouseBranch extends MotionBranch<GlobalAction, MotionAction, ClickAction> {
-  public CustomMouseBranch(MouseAgent parent, String n) {
-    super(parent, n);
-    setClickBinding(LEFT, 1, ClickAction.CHANGE_COLOR);
-    setMotionBinding(MouseAgent.RIGHT_ID, MotionAction.CHANGE_SHAPE);
-    //clickProfile().setBinding(new ClickShortcut(LEFT, 1), ClickAction.CHANGE_COLOR);
-    //motionProfile().setBinding(new MotionShortcut(RIGHT), MotionAction.CHANGE_SHAPE);
-  }
-}
-
+ //<>//
 // Final tutorial would make much more sense when having lots of actions and multiple agents
 public class ActionGrabberEllipse extends InteractiveGrabberObject<GlobalAction> {
   PGraphics pg;
@@ -231,8 +213,6 @@ int                oX      = 640 - w;
 int                oY      = 360 - h;
 PGraphics          ctrlCanvas;
 Scene              ctrlScene;
-CustomMouseBranch  mouseBranch;
-CustomKeyboardBranch keyBranch;
 public PShape      eShape;
 ActionGrabberEllipse      e;
 PGraphics          canvas;
@@ -247,16 +227,20 @@ public void setup() {
 
   ctrlCanvas = createGraphics(w, h, P2D);
   ctrlScene = new Scene(this, ctrlCanvas, oX, oY);
-  mouseBranch = new CustomMouseBranch(ctrlScene.mouseAgent(), "my_mouse");
-  mouseBranch.clickProfile().setBinding(new ClickShortcut(RIGHT, 1), ClickAction.CHANGE_COLOR);
-  //mouseBranch.profile().setBinding(new MotionShortcut(MouseAgent.WHEEL_ID), MotionAction.CHANGE_SHAPE);
-  mouseBranch.setMotionBinding(MouseAgent.WHEEL_ID, MotionAction.CHANGE_SHAPE);
   
-  keyBranch = new CustomKeyboardBranch(ctrlScene.keyboardAgent(), "my_keyboard");
   ctrlScene.setAxesVisualHint(false);
   ctrlScene.setGridVisualHint(false);
 
   e = new ActionGrabberEllipse(ctrlCanvas, new PVector(0, 0), 30);
+  KeyboardBranch<GlobalAction, KeyAction> keyBranch = ctrlScene.keyboardAgent().appendBranch();
+  keyBranch.setBinding('b', KeyAction.BLUE);
+  keyBranch.setBinding('r', KeyAction.RED);
+  MotionBranch<GlobalAction, MotionAction, ClickAction> mouseBranch = ctrlScene.mouseAgent().appendBranch();
+  mouseBranch.setClickBinding(LEFT, 1, ClickAction.CHANGE_COLOR);
+  mouseBranch.setMotionBinding(MouseAgent.RIGHT_ID, MotionAction.CHANGE_SHAPE);
+  mouseBranch.clickProfile().setBinding(new ClickShortcut(RIGHT, 1), ClickAction.CHANGE_COLOR);
+  mouseBranch.setMotionBinding(MouseAgent.WHEEL_ID, MotionAction.CHANGE_SHAPE);
+  
   ctrlScene.mouseAgent().addGrabber(e, mouseBranch);
   ctrlScene.keyboardAgent().addGrabber(e, keyBranch);
   ctrlScene.keyboardAgent().setDefaultGrabber(e);  
