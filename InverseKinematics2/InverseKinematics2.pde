@@ -5,19 +5,20 @@
  * 
  * */
 /*
- *  Este proyecto se basa en el desarrollo de un modelo de un brazo robótico tipo SCARA, al cual se le aplica cinemática
- * inversa con el fin de que su movimiento sea lo más semejante con las leyes de la física en el mundo real. 
- * Los brazos robots tipo Scara, tienen una parte llamada la muñeca que nos puede servir para orientar el terminal. 
- * Imaginemos que el brazo robótico toma un objeto y quiere poder transladarlo a otro lugar con un ángulo determinado. La muñeca se encargará de ello.
- * En el brazo Scara tenemos que resolver los dos ángulos de las articulaciones. 
- * En este tipo de brazos el eje Z no interviene en la cinemática inversa porque es un resultado en sí mismo. 
- * Desde el punto de vista del cálculo sólo tenemos en cuenta los ejes X e Y,  y la longitud de las articulaciones.
+ *  Este proyecto se basa en el desarrollo de un modelo de un brazo rob??tico tipo SCARA, al cual se le aplica cinem??tica
+ * inversa con el fin de que su movimiento sea lo m??s semejante con las leyes de la f??sica en el mundo real. 
+ * Los brazos robots tipo Scara, tienen una parte llamada la mu??eca que nos puede servir para orientar el terminal. 
+ * Imaginemos que el brazo rob??tico toma un objeto y quiere poder transladarlo a otro lugar con un ??ngulo determinado. La mu??eca se encargar?? de ello.
+ * En el brazo Scara tenemos que resolver los dos ??ngulos de las articulaciones. 
+ * En este tipo de brazos el eje Z no interviene en la cinem??tica inversa porque es un resultado en s?? mismo. 
+ * Desde el punto de vista del c??lculo s??lo tenemos en cuenta los ejes X e Y,  y la longitud de las articulaciones.
  */
 
 import remixlab.proscene.*;
 import remixlab.dandelion.core.*;
 import remixlab.dandelion.geom.*;
-import remixlab.dandelion.core.Constants.*;
+
+//TODO: to slow to init, but maybe it's just my poor machine :P -jp
 
 float   Pi, degToRad, wristAng, tweezersAng, orientationAng, armAng, forearmAng, wristIncl, tweezersIncl;
 Integer  armLen, forearmLen, wristLen, tweezersLen, robotHeight;
@@ -49,9 +50,6 @@ public void setup() {
 
   ///FRAME RATE///
   frameRate(100);
-
-  ///INPUT SETUP///
-  setExoticCustomization();
 
   ///INITIALIZE MODEL VALUES///
   Pi   = PI;
@@ -119,16 +117,16 @@ public void draw() {
   targetY = repere.coordinatesOf(new Vec()).z();
   targetZ = -repere.coordinatesOf(new Vec()).y()+200;
 
-  //Se verifica si hubo algún cambio en alguna de las partes del robot para dibujar nuevamente
+  //Se verifica si hubo alg??n cambio en alguna de las partes del robot para dibujar nuevamente
   if ((mode==false) && (targetX == lastTargetX) && (targetY == lastTargetY) && (targetZ == lastTargetZ)) {
     lastTargetX = targetX;
     lastTargetY = targetY;
     lastTargetZ = targetZ;
     //return;
-    //Esto es una optimización del código para ambos modos, sin
-    //embargo la cámara no es totalmente funcional en el modo
+    //Esto es una optimizaci??n del c??digo para ambos modos, sin
+    //embargo la c??mara no es totalmente funcional en el modo
     //retenido --- pendiente para un futuras mejoras --- quitar
-    //comentario al principio del draw eliminar código equivalente
+    //comentario al principio del draw eliminar c??digo equivalente
     //al final del mismo, de esa manera se mantiene el efecto de luz
   }     
 
@@ -351,7 +349,7 @@ public void drawModel() {
   popMatrix();
 }
 
-// Se implementa una función para cada parte del brazo robótico, para cuando
+// Se implementa una funci??n para cada parte del brazo rob??tico, para cuando
 // se este dibujando en modo retenido
 public PShape drawFloor() {
 
@@ -523,21 +521,6 @@ public PShape drawWrist() {
   return part;
 }
 
-public void setExoticCustomization() {
-  ///EYE///
-  scene.mouseAgent().setButtonBinding(Target.EYE, CENTER, DOF2Action.ZOOM_ON_ANCHOR);
-  scene.mouseAgent().setButtonBinding(Target.EYE, LEFT, DOF2Action.TRANSLATE);
-  scene.mouseAgent().setButtonBinding(Target.EYE, RIGHT, DOF2Action.ROTATE_CAD);
-  ///INTERACTIVE FRAME///
-  scene.mouseAgent().setButtonBinding(Target.FRAME, LEFT, DOF2Action.TRANSLATE);
-  scene.mouseAgent().setButtonBinding(Target.FRAME, CENTER, DOF2Action.SCALE);
-  scene.mouseAgent().setWheelBinding(Target.FRAME, DOF1Action.TRANSLATE_Z);
-  scene.mouseAgent().setButtonBinding(Target.FRAME, RIGHT, null);
-  ///KEYBOARD//
-  scene.keyboardAgent().setBinding('s', null);
-  scene.keyboardAgent().setBinding('g', SceneAction.TOGGLE_AXES_VISUAL_HINT);
-}
-
 public void keyPressed() {
   if (key =='A') {
     wristAng=wristAng-(float).5;
@@ -561,39 +544,29 @@ public void keyPressed() {
       tweezersDistance=tweezersDistance+(float).005;
     }
   }
-  if (key == '1') {
-    setExoticCustomization();
-    mode=true;
-  }
-  if (key == '2') {
-    //scene.setMouseButtonBinding(Target.EYE, CENTER, null);
-    //scene.setMouseButtonBinding(Target.EYE, LEFT, null);
-    //scene.setMouseButtonBinding(Target.EYE, RIGHT, null);
-    mode=false;
-  }
 }
 
 void InverseK() {  
   float   Afx, Afy, LadoA, LadoB, Alfa, Beta, Gamma, Modulo, Hypot, Xprime, Yprime;
 
   ///ORIENTATION///
-  //Se halla el ángulo de giro de todo el brazo
+  //Se halla el ??ngulo de giro de todo el brazo
   orientationAng = (atan2(targetY, targetX)); 
 
   ///COMPUTE VALUES///
   /*
-        * Se va a hacer una especie de equivalencia, donde se tendrán que calcular un eje X ficticio
-   * y otro eje Y ficticio; se llamarán Xprime e Yprime. Estas variables en realidad 
+        * Se va a hacer una especie de equivalencia, donde se tendr??n que calcular un eje X ficticio
+   * y otro eje Y ficticio; se llamar??n Xprime e Yprime. Estas variables en realidad 
    * son los ejes X e Y visto en dos dimensiones.
    * */
 
   /*
-        * Primeramente  se tiene que calcular el módulo formado por los catetos X e Y:
+        * Primeramente  se tiene que calcular el m??dulo formado por los catetos X e Y:
    */
   Modulo  = sqrt(abs(pow(targetX, 2))+abs(pow(targetY, 2))); 
 
   /*
-        * Después se hace una reconversión de variables Xprime y Yprime, las cuales nos hará de puente para hacer el calculo de los ángulos que veremos más adelante.
+        * Despu??s se hace una reconversi??n de variables Xprime y Yprime, las cuales nos har?? de puente para hacer el calculo de los ??ngulos que veremos m??s adelante.
    */
   Xprime=Modulo;
   Yprime=targetZ;
@@ -604,17 +577,17 @@ void InverseK() {
   Hypot=sqrt((pow(LadoA, 2))+(pow(LadoB, 2)));
 
   /*
-        * Se usa la función Atan2(Y, X). Debido a que tiene en cuenta de los signos contenidos
-   * en los valores X e Y, tiene presente además el cuadrante en el que se encuentra
+        * Se usa la funci??n Atan2(Y, X). Debido a que tiene en cuenta de los signos contenidos
+   * en los valores X e Y, tiene presente adem??s el cuadrante en el que se encuentra
    * y puede recorrer los cuatro cuadrantes.
    */
   Alfa=atan2(LadoA, LadoB);
   Beta=acos( ((pow(armLen, 2))-(pow(forearmLen, 2))+(pow(Hypot, 2)))/(2*armLen*Hypot) );
 
   /*
-        * El triángulo formado por el brazo, ante brazo e Hipotenusa suele ser del tipo irregular, 
+        * El tri??ngulo formado por el brazo, ante brazo e Hipotenusa suele ser del tipo irregular, 
    * sobre todo si los dos catetos (brazo y ante brazo) no son iguales. 
-   * Para resolver los ángulos de este tipo de triángulo hay que aplicar el Teorema del Coseno.
+   * Para resolver los ??ngulos de este tipo de tri??ngulo hay que aplicar el Teorema del Coseno.
    */
   ///ARM ANGLE//
   armAng= (Alfa+Beta);
@@ -624,8 +597,8 @@ void InverseK() {
   forearmAng=(-((180*degToRad)-Gamma));
 
   /*
-       * el ángulo de cabeceo, es el ángulo que se le da al brazo para que esa posición se mantenga constante 
-   * desde el punto de vista del observador, aunque el brazo se mueva a otra posición. 
+       * el ??ngulo de cabeceo, es el ??ngulo que se le da al brazo para que esa posici??n se mantenga constante 
+   * desde el punto de vista del observador, aunque el brazo se mueva a otra posici??n. 
    */
   ///WRIST ANGLE///
   wristIncl= (tweezersAng*degToRad-armAng-forearmAng);

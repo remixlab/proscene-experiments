@@ -30,7 +30,7 @@ class Interpolation {
       enmarche=true;
     }
     pushMatrix();
-    kfi.frame().applyTransformation(scene);
+    scene.applyTransformation(kfi.frame());
     noStroke();
     scene.drawCone(4,5,5,lng);
     popMatrix();

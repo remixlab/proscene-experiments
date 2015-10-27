@@ -24,6 +24,7 @@ import remixlab.bias.core.*;
 import remixlab.bias.event.*;
 import remixlab.dandelion.geom.*;
 
+//TODO partially broken. Fix me!
 
 final int unit = 10, dim=40;
 
@@ -92,7 +93,7 @@ void draw() {
   canvas.beginDraw();
   scene.beginDraw();
   canvas.background(255);
-  scene.drawModels();
+  scene.drawFrames();
   updatePickedModelColor();
   drawPanel();
   scene.pg().translate(dim/2*unit,dim/2*unit, -2.5);
@@ -496,7 +497,7 @@ void traFalse(){
 void keyPressed(KeyEvent e) {
    if( e.getKeyCode()== LEFT) {
      for (ChipFrame chip : chips) {
-      if (scene.motionAgent().isInputGrabber(chip)){
+      if (chip.grabsInput(scene.motionAgent())){
         int aux = chip.sizeX;
         chip.sizeX = chip.sizeY;
         chip.sizeY = aux;

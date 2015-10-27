@@ -12,7 +12,7 @@
  */
 
 
-class ChipFrame extends InteractiveModelFrame {
+class ChipFrame extends InteractiveFrame {
     int [] colorP;
     int sizeX, sizeY, sizeZ;
     float xc, yc, zc;

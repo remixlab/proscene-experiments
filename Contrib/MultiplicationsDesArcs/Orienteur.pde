@@ -33,7 +33,7 @@ class Orienteur {
 
   void draw() {
     pushMatrix();
-    if (repere.isInInteraction()) {
+    if (repere.grabsInput()) {
       if (!estChange) {
         color trans=col1;
         col1=col2;

@@ -1,6 +1,6 @@
 /**
  * Solar System.
- * by Juan Manuel Flórez Fandiño and Manuel L. Molano Saavedra.
+ * by Juan Manuel Fl??rez Fandi??o and Manuel L. Molano Saavedra.
  * 
  * 
  * This example illustrates how to create some figures (planets) by using textures and making a lighting model of the Solar System.
@@ -11,7 +11,7 @@
  * It is suppose that you can control the speed of the simulation or even reverse it throught P5 control.
  */
 
-
+//TODO partially broken. Fix me!
 import controlP5.*;
 import remixlab.proscene.*;
 
@@ -72,7 +72,7 @@ class TestCanvas extends Canvas {
     println("starting a test canvas.");
     n = 1;
   }
-  public void draw(PApplet p) {
+  public void draw(PGraphics p) {
     n += 0.01;
     p.ellipseMode(CENTER);
     p.fill(lerpColor(color(0,100,200),color(0,200,100),map(sin(n),-1,1,0,1)));

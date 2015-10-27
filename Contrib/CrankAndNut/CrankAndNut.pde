@@ -71,7 +71,7 @@ void draw() {
   pushMatrix();
   manette.applyTransformation();
   // scene.drawAxes(100);
-  if (manette.isInInteraction()&&(mouseButton == RIGHT)) {
+  if (mouseButton == RIGHT) {
     PVector dif=comb(1.0, Scene.toPVector(manette.position()), -1.0, Scene.toPVector(vis.position()));
     dif.normalize();
     delta = angleEntre(prevdif, dif);

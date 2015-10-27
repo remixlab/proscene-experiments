@@ -31,7 +31,7 @@ class Interpolation {
     }
     fill(255); 
     pushMatrix();
-    kfi.frame().applyTransformation(scene);
+    scene.applyTransformation(kfi.frame());
     switch(typ) {
     case 0:// les boites
       box(dx, dy, dz);
