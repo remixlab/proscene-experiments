@@ -37,32 +37,4 @@ public class TargetMouseAgent extends Agent {
       return;
     }
   }
-
-  /*
-  public void mouseEvent(processing.event.MouseEvent e) {
-    move = e.getAction() == processing.event.MouseEvent.MOVE;
-    press = e.getAction() == processing.event.MouseEvent.PRESS;
-    drag = e.getAction() == processing.event.MouseEvent.DRAG;
-    release = e.getAction() == processing.event.MouseEvent.RELEASE;
-    if (move || press || drag || release) {
-      currentEvent = new DOF2Event(prevEvent, e.getX(), e.getY(),  e.getModifiers(), move ? BogusEvent.NO_ID : e.getButton());
-      if (move && !click2Pick)
-        updateTrackedGrabber(currentEvent);
-      handle(release ? currentEvent.flush() : currentEvent);      
-      prevEvent = currentEvent.get();
-      return;
-    }
-    if (e.getAction() == processing.event.MouseEvent.WHEEL) {// e.getAction() = MouseEvent.WHEEL = 8
-      handle(new DOF1Event(e.getCount(), e.getModifiers(), WHEEL_ID));
-      return;
-    }
-    if (e.getAction() == processing.event.MouseEvent.CLICK) {
-      ClickEvent bogusClickEvent = new ClickEvent(e.getX(), e.getY(),  e.getModifiers(), e.getButton(), e.getCount());
-      if (click2Pick)
-        updateTrackedGrabber(bogusClickEvent);
-      handle(bogusClickEvent);
-      return;
-    }
-  }
-  */
 }
