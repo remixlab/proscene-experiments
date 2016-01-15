@@ -1,7 +1,7 @@
 /**
  * Este ejemplo muestra los pasos minimos que se necesitan para crear una escena interactiva
  * que puede reaccionar al mouse y al keyboard de Processing. Se puede pensar en una libreria
- * proscene_tiny que comprende todos los paquetes de proscene, menos el de remixlab.bias.fx.*.
+ * proscene_tiny que comprende todos los paquetes de proscene, menos el de remixlab.bias.ext.*.
  * y el de remixlab.proscene.*. (observese que aca no se emplean). Asimismo, se tendria la
  * libreria proscene_tiny.js, como el port de proscene_tiny empleando gwt (y la extension que
  * hace posible emplear la api como en cualquier libreria js).

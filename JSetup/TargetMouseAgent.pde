@@ -20,7 +20,7 @@ public class TargetMouseAgent extends Agent {
           /*e.getModifiers()*/BogusEvent.NO_MODIFIER_MASK, move ? BogusEvent.NO_ID : e.getButton());      
       if (move && !click2Pick)
         updateTrackedGrabber(currentEvent);
-      handle(release ? currentEvent.flush() : currentEvent);      
+      handle(press ? currentEvent.fire() : release ? currentEvent.flush() : currentEvent);
       prevEvent = currentEvent.get();
       return;
     }

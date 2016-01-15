@@ -51,28 +51,30 @@ public class CustomGrabberFrame extends GenericFrame {
     
     @Override
     public void performInteraction(KeyboardEvent event) {
+      if (bypassKey(event))
+        return;
       if( event.isShiftDown() ) {
         //also possible here is to use Processing keys: UP
         if(event.id()  == TargetKeyAgent.UP_KEY)
-          translateY(event, true);
+          translateY(true);
         if(event.id()  == TargetKeyAgent.DOWN_KEY)
-          translateY(event, false);
+          translateY(false);
         if(event.id()  == TargetKeyAgent.LEFT_KEY)
-          translateX(event, false);
+          translateX(false);
         if(event.id()  == TargetKeyAgent.RIGHT_KEY)
-          translateX(event, true);
+          translateX(true);
       }
       else {
         if(event.id()  == TargetKeyAgent.UP_KEY)
           if(gScene.is3D())
-            rotateX(event, true);
+            rotateX(true);
         if(event.id()  == TargetKeyAgent.DOWN_KEY)
           if(gScene.is3D())
-            rotateY(event, false);
+            rotateY(false);
         if(event.id()  == TargetKeyAgent.LEFT_KEY)
-          rotateZ(event, false);
+          rotateZ(false);
         if(event.id()  == TargetKeyAgent.RIGHT_KEY)
-          rotateZ(event, true);
+          rotateZ(true);
       }
     }
   }
