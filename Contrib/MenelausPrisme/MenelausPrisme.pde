@@ -1,5 +1,5 @@
 /**
- * Menelaus Prisme
+ * Menelaus Prisme version PROSCENE 3.0 fait le 24/01/2016
  * by Jacques Maire (http://www.alcys.com/)
  * 
  * Part of proscene classroom: http://www.openprocessing.org/classroom/1158
@@ -14,23 +14,29 @@ import remixlab.dandelion.geom.*;
 import remixlab.dandelion.constraint.*;
 
 Scene scene;
-Prisme prisme;
+Arbre arbre;
 PFont font;
 float tempo;
 
 void setup() {
-  size(640, 640, P3D);
+  size(800, 800, P3D);
   scene=new Scene(this);
-  scene.setRadius(160);
+  scene.setRadius(260);
   scene.showAll();
-  font=loadFont("FreeSans-24.vlw");  
+  scene.setGridVisualHint(false);
+  font=loadFont("AdobeArabic-Regular-24.vlw");  
   textFont(font);
-
-  prisme=new Prisme();
+  arbre=new Arbre();
 }
 
 void draw() { 
-  background(255, 150, 0);
-  tempo=1.0/5000.0*(millis()%5000);
-  prisme.draw();
+  background(0,0,100);
+   tempo=1.0/2000.0*(millis()%2000);
+ //
+  lights();
+  ambientLight(150, 102, 102); 
+  //
+  scene.drawFrames();
+  arbre.CalculDernierTriangle();
+  arbre.displayText();
 }
