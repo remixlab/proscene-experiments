@@ -1,62 +1,147 @@
-public class CustomMatrixHelper extends MatrixHelper {
-  PGraphicsOpenGL  pg;
+public class TargetMatrixHelper extends MatrixHelper {
+  PGraphics  pg;
 
-  public CustomMatrixHelper(TargetScene scn, PGraphicsOpenGL renderer) {
+  public TargetMatrixHelper(TargetScene scn, PGraphics renderer) {
     super(scn);
     pg = renderer;
   }
 
   public PGraphicsOpenGL pggl() {
-    return pg;
+    return (PGraphicsOpenGL)pg;
+  }
+  
+  @Override
+  public void bind(boolean recompute) {
+    Eye eye = this.gScene.eye();
+    
+    if (recompute) {
+      eye.computeProjection();
+      eye.computeView();
+      cacheProjectionView();
+    }
+    
+    if (gScene.is3D())
+      bind3d((Camera) eye);
+    else
+      bind2d((Window) eye);
+  }
+  
+  public void bind3d(Camera camera) {
+    // 1. set projection
+    switch (camera.type()) {
+    case PERSPECTIVE:
+     pggl().perspective(camera.fieldOfView(), camera.aspectRatio(), camera.zNear(), camera.zFar());
+     break;
+    case ORTHOGRAPHIC:
+     float[] wh = camera.getOrthoWidthHeight();//return halfWidth halfHeight
+     pggl().ortho(-wh[0], wh[0], -wh[1], wh[1], camera.zNear(), camera.zFar());
+     break;
+    }
+    if(this.gScene.isRightHanded())
+     pggl().projection.m11 = -pggl().projection.m11;  
+    
+    // 2. set modelview
+    pggl().camera(camera.position().x(), camera.position().y(), camera.position().z(),
+                    camera.at().x(), camera.at().y(), camera.at().z(),
+                    camera.upVector().x(), camera.upVector().y(), camera.upVector().z());
+  }
+  
+  public void bind2d(Window window) {
+    Vec pos = window.position();
+    Rotation o = window.frame().orientation();
+    translate(gScene.width() / 2, gScene.height() / 2);
+    if (gScene.isRightHanded())
+      scale(1, -1);
+    scale(1 / window.frame().magnitude(), 1 / window.frame().magnitude());
+    rotate(-o.angle());
+    translate(-pos.x(), -pos.y());  
+  }
+  
+  @Override
+  public void beginScreenDrawing() {
+    if(gScene.is3D())
+      super.beginScreenDrawing();
+    else {
+      Vec pos = gScene.eye().position();
+      Rotation o = gScene.eye().frame().orientation();
+      pushModelView();
+      translate(pos.x(), pos.y());
+      rotate(o.angle());
+      scale(gScene.window().frame().magnitude(), gScene.window().frame().magnitude());
+      if (gScene.isRightHanded())
+        scale(1, -1);
+      translate(-gScene.width() / 2, -gScene.height() / 2);
+    }
+  }
+
+  @Override
+  public void endScreenDrawing() {
+    if(gScene.is3D())
+      super.endScreenDrawing();
+    else
+      popModelView();
   }
 
   @Override
   public void pushProjection() {
-    pggl().pushProjection();
+    if(gScene.is3D())
+      pggl().pushProjection();
+    else
+      super.pushProjection();
   }
 
   @Override
   public void popProjection() {
-    pggl().popProjection();
+    if(gScene.is3D())
+      pggl().popProjection();
+    else
+      super.popProjection();
   }
 
   @Override
   public void resetProjection() {
-    pggl().resetProjection();
+    if(gScene.is3D())
+      pggl().resetProjection();
+   else
+     super.resetProjection();
   }
 
   @Override
   public void printProjection() {
-    pggl().printProjection();
+    pg.printProjection();
   }
 
   @Override
   public Mat projection() {
-    return toMat(pggl().projection.get());
+    //return gScene.is3D() ? toMat(pggl().projection.get()) : gScene.eye().getProjection();
+    return gScene.eye().getProjection();
   }
 
   @Override
   public Mat getProjection(Mat target) {
     if (target == null)
-      target = toMat(pggl().projection.get()).get();
+      target = projection().get();
     else
-      target.set(toMat(pggl().projection.get()));
+      target.set(projection());
     return target;
   }
 
   @Override
   public void applyProjection(Mat source) {
-    pggl().applyProjection(toPMatrix(source));
+    if(gScene.is3D())
+      pggl().applyProjection(toPMatrix(source));
+    else
+      super.applyProjection(source);
   }
 
   @Override
   public void pushModelView() {
-    pggl().pushMatrix();
+    pg.pushMatrix();
   }
 
   @Override
   public void popModelView() {
-    pggl().popMatrix();
+    pg.popMatrix();
   }
 
   @Override
@@ -66,81 +151,85 @@ public class CustomMatrixHelper extends MatrixHelper {
 
   @Override
   public Mat modelView() {
-    return toMat((PMatrix3D) pggl().getMatrix());
+    //return gScene.is3D() ? toMat((PMatrix3D) pggl().getMatrix()) : gScene.eye().getView();
+    return gScene.eye().getView();
   }
 
   @Override
   public Mat getModelView(Mat target) {
     if (target == null)
-      target = toMat((PMatrix3D) pggl().getMatrix()).get();
+      target = modelView().get();
     else
-      target.set(toMat((PMatrix3D) pggl().getMatrix()));
+      target.set(modelView());
     return target;
   }
 
   @Override
   public void printModelView() {
-    pggl().printMatrix();
+    pg.printMatrix();
   }
 
   @Override
   public void applyModelView(Mat source) {
-    pggl().applyMatrix(toPMatrix(source));
+    pg.applyMatrix(toPMatrix(source));
   }
 
   @Override
   public void translate(float tx, float ty) {
-    pggl().translate(tx, ty);
+    pg.translate(tx, ty);
   }
 
   @Override
   public void translate(float tx, float ty, float tz) {
-    pggl().translate(tx, ty, tz);
+    pg.translate(tx, ty, tz);
   }
 
   @Override
   public void rotate(float angle) {
-    pggl().rotate(angle);
+    pg.rotate(angle);
   }
 
   @Override
   public void rotateX(float angle) {
-    pggl().rotateX(angle);
+    pg.rotateX(angle);
   }
 
   @Override
   public void rotateY(float angle) {
-    pggl().rotateY(angle);
+    pg.rotateY(angle);
   }
 
   @Override
   public void rotateZ(float angle) {
-    pggl().rotateZ(angle);
+    pg.rotateZ(angle);
   }
 
   @Override
   public void rotate(float angle, float vx, float vy, float vz) {
-    pggl().rotate(angle, vx, vy, vz);
+    pg.rotate(angle, vx, vy, vz);
   }
 
   @Override
   public void scale(float s) {
-    pggl().scale(s);
+    pg.scale(s);
   }
 
   @Override
   public void scale(float sx, float sy) {
-    pggl().scale(sx, sy);
+    pg.scale(sx, sy);
   }
 
   @Override
   public void scale(float x, float y, float z) {
-    pggl().scale(x, y, z);
+    pg.scale(x, y, z);
   }
 
   @Override
   public void setProjection(Mat source) {
-    pggl().setProjection(toPMatrix(source));
+    if (gScene.is3D())
+      pggl().setProjection(toPMatrix(source));
+    else
+      super.setProjection(source);
   }
 
   @Override
@@ -148,9 +237,12 @@ public class CustomMatrixHelper extends MatrixHelper {
     if (gScene.is3D())
       pggl().setMatrix(toPMatrix(source));// in P5 this caches projmodelview
     else {
-      pggl().modelview.set(toPMatrix(source));
-      pggl().projmodelview.set(Mat.multiply(gScene.eye().getProjection(false), gScene.eye().getView(false))
-        .getTransposed(new float[16]));
+      if(pg instanceof PGraphicsOpenGL) {
+        pggl().modelview.set(toPMatrix(source));
+        pggl().projmodelview.set(Mat.multiply(gScene.eye().getProjection(false), gScene.eye().getView(false)).getTransposed(new float[16]));
+      }
+      else
+        pg.setMatrix(Scene.toPMatrix2D(source));
     }
   }
 

@@ -5,7 +5,7 @@ public class TargetScene extends AbstractScene {
     parent = papplet;
 
     // 2. P5 connection
-    setMatrixHelper(new CustomMatrixHelper(this, (PGraphicsOpenGL) parent.g));
+    setMatrixHelper(new TargetMatrixHelper(this, parent.g));
     defMotionAgent = new TargetMouseAgent(this);
     defKeyboardAgent = new TargetKeyAgent(this);
     parent.registerMethod("mouseEvent", motionAgent());

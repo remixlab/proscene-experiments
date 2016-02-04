@@ -8,20 +8,18 @@
  *
  * Bajo el supuesto de que la api de proscene_tiny.js es de libre acceso en js, entonces la
  * estructura de paquetes de proscene para un target dado (como p5.js, webgl o three.js)
- * seria:
- *
- * proscene_tiny.js + target.js, donde target.js estaria compuesto al menos por:
+ * seria:proscene_tiny.js + target.js, donde target.js estaria compuesto al menos por:
  * TargetKeyAgent, TargetMouseAgent, TargetMatrixHelper y TargetScene. Observe que target.js
- * es constante (para cualquier app en la aplicacion), pero que se debe escribir a mano
- * (una sola vez).
+ * es constante (para cualquier app en la libreria), pero que se debe escribir a mano (una
+ * sola vez).
  *
  * Entonces, finalmente, la estructura de una app cualquiera (como la de este ejemplo), seria:
  *
  * proscene_tiny.js (port empleando gwt) + target.js (port manual que se realiza una solo vez
- * para cada plataforma) + las fuentes del ejemplo, en este caso: CustomScene,CustomGrabberFrame
- * y la clase principal JSetup.
+ * para cada plataforma) + las fuentes del ejemplo, en este caso: CustomScene,
+ * CustomGrabberFrame y la clase principal JSetup.
  *
- * El ejercicio que le propongo a partir de las anteriores observaciones, es el de portar este
+ * El ejercicio que propongo a partir de las anteriores observaciones, es el de portar este
  * ejemplo para el target de p5.js. Si todo va bien, luego podriamos ensayar el target de
  * webgl/three.js.
  *
@@ -41,8 +39,9 @@ import remixlab.dandelion.geom.*;
 
 CustomScene scene;
 CustomGrabberFrame gFrame;
-//String renderer = P2D;
-String renderer = P3D;
+//String renderer = JAVA2D;
+String renderer = P2D;
+//String renderer = P3D;
 
 void setup() {
   size(640, 360, renderer);    
