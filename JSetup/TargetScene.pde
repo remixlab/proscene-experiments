@@ -17,9 +17,14 @@ public class TargetScene extends AbstractScene {
     setLeftHanded();
     width = parent.width;
     height = parent.height;
+    // default camera would be set with:
+    //setEye(is3D() ? new Camera(this) : new Window(this));
+    //but we overwrite its frame
+    ///*
     eye = is3D() ? new Camera(this) : new Window(this);
     eye.setFrame(new CustomGrabberFrame(eye));
     setEye(eye());// calls showAll();
+    //*/
 
     // 4. init
     init();
