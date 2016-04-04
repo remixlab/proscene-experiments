@@ -9,7 +9,7 @@
  * (o crear otro sketch) para ilustrar el resto de parametros de manera interactiva. Es
  * decir, empleando iFrames en la scene de control (como se hace aca con el circulo rojo
  * de la ctrlScene).
- * //<>//
+ * 
  * Press 'e' at the mainScene to change the camera type
  * Press 'h' to display the key shortcuts and mouse bindings in the console.
  */
