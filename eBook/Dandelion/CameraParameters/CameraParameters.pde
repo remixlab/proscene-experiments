@@ -1,14 +1,16 @@
 /**
  * Camera Prameters.
- * by Camilo and Jean Pierre Charalambos.
+ * by Camilo Rodriguez and Jean Pierre Charalambos.
  * 
- * La idea es ilustrar los parametros de dandelion que contralan el volumen de vista:
- * camera.sceneRadius, camera.type, camera.zClippingCoefficient y camera.zNearCoefficient
+ * La idea es ilustrar los parametros de dandelion (en las clases: Eye, Camera y Window)
+ * que contralan el volumen de vista: sceneRadius(), sceneCenter() y los siguientes que
+ * son solo de la camera: type(), zClippingCoefficient() y zNearCoefficient()
  * 
- * En este ejemplo se ilustran el camera.sceneRadius y el type. La tarea es completar
+ * En este ejemplo se ilustran el sceneRadius() y el camera.type(). La tarea es completar
  * (o crear otro sketch) para ilustrar el resto de parametros de manera interactiva. Es
  * decir, empleando iFrames en la scene de control (como se hace aca con el circulo rojo
- * de la ctrlScene).
+ * de la ctrlScene). Recomendación: empezar con el sceneCenter sobre este ejemplo y
+ * adaptar este ejemplo para el caso 2d.
  * 
  * Press 'e' at the mainScene to change the camera type
  * Press 'h' to display the key shortcuts and mouse bindings in the console.
