@@ -1,5 +1,3 @@
-// for the MatrixHelper base class refer to:
-// https://github.com/remixlab/proscene/blob/master/src/remixlab/dandelion/core/MatrixHelper.java
 public class TargetMatrixHelper extends MatrixHelper {
   PGraphics  pg;
 
@@ -17,7 +15,7 @@ public class TargetMatrixHelper extends MatrixHelper {
   // bind() gets called by Processing at the beginning of the renderer loop
   // via the pApplet registerMethod("pre", Scene)
   // details here: https://github.com/processing/processing/wiki/Library-Basics
-  // to have a grasp of what bind() does please have a look at:
+  // to get a grasp of what bind() does please have a look at
   // eye.computeProjection() and eye.computeView()
   // here: https://github.com/remixlab/proscene/blob/master/src/remixlab/dandelion/core/Eye.java
   // actual implementations are:

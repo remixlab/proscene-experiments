@@ -1,17 +1,27 @@
 /**
- * JSetup
+ * Este ejemplo muestra los pasos minimos que se necesitan para crear una escena interactiva
+ * que puede reaccionar al mouse y al keyboard de Processing. Se puede pensar en una libreria
+ * proscene_tiny que comprende todos los paquetes de proscene, menos el de remixlab.bias.ext.*.
+ * y el de remixlab.proscene.*. (observese que aca no se emplean). Asimismo, se tendria la
+ * libreria proscene_tiny.js, como el port de proscene_tiny empleando gwt (y la extension que
+ * hace posible emplear la api como en cualquier libreria js).
  *
- * This example shows how to set up an interactive (mouse and keyboard) Processing scene
- * using the "proscene.js" framework targetting p5.js.
+ * Bajo el supuesto de que la api de proscene_tiny.js es de libre acceso en js, entonces la
+ * estructura de paquetes de proscene para un target dado (como p5.js, webgl o three.js)
+ * seria:proscene_tiny.js + target.js, donde target.js estaria compuesto al menos por:
+ * TargetKeyAgent, TargetMouseAgent, TargetMatrixHelper y TargetScene. Observe que target.js
+ * es constante (para cualquier app en la libreria), pero que se debe escribir a mano (una
+ * sola vez).
  *
- * The proscene.js library is obtained by applying the gwt transpiler
- * (http://www.gwtproject.org/) to all the proscene framework packages
- * (https://github.com/remixlab/proscene), but the remixlab.bias.ext.*. and the
- * remixlab.proscene.*. packages which are not compatible with the transpiler.
+ * Entonces, finalmente, la estructura de una app cualquiera (como la de este ejemplo), seria:
  *
- * For matrix handling please refer to the TargetMatrixHelper class. In particular the
- * TargetMatrixHalper.bind() function shows the p5.js functionality needed by the
- * proscene.js port.
+ * proscene_tiny.js (port empleando gwt) + target.js (port manual que se realiza una solo vez
+ * para cada plataforma) + las fuentes del ejemplo, en este caso: CustomScene,
+ * CustomGrabberFrame y la clase principal JSetup.
+ *
+ * El ejercicio que propongo a partir de las anteriores observaciones, es el de portar este
+ * ejemplo para el target de p5.js. Si todo va bien, luego podriamos ensayar el target de
+ * webgl/three.js.
  *
  * 'i' -> shifts default grabber
  * 's' -> interpolates to fit scene
