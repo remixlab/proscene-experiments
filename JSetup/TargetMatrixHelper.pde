@@ -14,7 +14,7 @@ public class TargetMatrixHelper extends MatrixHelper {
   
   boolean bindP3D = false;
   
-  // bind() gets called by Processing at the beginning of the renderer loop
+  // bind(true) gets called by Processing at the beginning of the renderer loop
   // via the pApplet registerMethod("pre", Scene)
   // details here: https://github.com/processing/processing/wiki/Library-Basics
   // to have a grasp of what bind() does please have a look at:
