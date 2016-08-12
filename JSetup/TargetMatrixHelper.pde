@@ -40,7 +40,7 @@ public class TargetMatrixHelper extends MatrixHelper {
       else
         bindOpenGL();// works for the P2D and the P3D renderers
     else
-      bind2D((Window) eye);// works only for the JAVA2D renderer
+      bind2D((Window) eye);// works for the P2D and JAVA2D renderers
   }
   
   // works for both OpenGL Processing renderers: P2D and P3D
