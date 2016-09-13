@@ -43,7 +43,9 @@ void settings() {
 void setup() {
   canvas = createGraphics(w, h, renderer);
   scene = new Scene(this, canvas);
-  frame1 = new InteractiveFrame(scene, this, "frameDrawing");
+  //frame1 = new InteractiveFrame(scene, this, "frameDrawing");
+  // if the shape is defined in the PApplet instance, we can simply go:
+  frame1 = new InteractiveFrame(scene, "frameDrawing");
   frame1.translate(30, 30);
 
   auxCanvas = createGraphics(oW, oH, renderer);
