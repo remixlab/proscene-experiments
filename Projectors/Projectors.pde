@@ -60,7 +60,8 @@ void setup() {
   iFrame = new InteractiveFrame(auxScene);
   //to not scale the iFrame on mouse hover uncomment:
   //iFrame.setHighlightingMode(InteractiveFrame.HighlightingMode.NONE);
-  iFrame.fromFrame(scene.eyeFrame());
+  iFrame.setWorldMatrix(scene.eyeFrame());
+  iFrame.setShape(scene.eyeFrame());
   handleAgents();
 }
 
