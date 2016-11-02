@@ -7,15 +7,11 @@ public class MouseAgent extends Agent {
   
   public MouseAgent(InputHandler handler) {
     super(handler);
-    LEFT_ID = Profile.registerMotionID(37, this.getClass(), 2);
-    CENTER_ID = Profile.registerMotionID(3, this.getClass(), 2);
-    RIGHT_ID = Profile.registerMotionID(39, this.getClass(), 2);
-    WHEEL_ID = Profile.registerMotionID(8, this.getClass(), 1);
-    NO_BUTTON = Profile.registerMotionID(BogusEvent.NO_ID, this.getClass(), 2);
-    // click ids are anonymous (since they are the same as motions)
-    Profile.registerClickID(LEFT_ID, this.getClass());
-    Profile.registerClickID(CENTER_ID, this.getClass());
-    Profile.registerClickID(RIGHT_ID, this.getClass());
+    LEFT_ID = MotionShortcut.registerID(37, 2);
+    CENTER_ID = MotionShortcut.registerID(3, 2);
+    RIGHT_ID = MotionShortcut.registerID(39, 2);
+    WHEEL_ID = MotionShortcut.registerID(8, 1);
+    NO_BUTTON = MotionShortcut.registerID(BogusEvent.NO_ID, 2);
   }
   
   public void mouseEvent(processing.event.MouseEvent e) {

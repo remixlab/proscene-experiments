@@ -61,31 +61,24 @@ void setup() {
   //to not scale the iFrame on mouse hover uncomment:
   //iFrame.setHighlightingMode(InteractiveFrame.HighlightingMode.NONE);
   iFrame.fromFrame(scene.eyeFrame());
-  handleAgents();
 }
 
 void draw() {
-  handleAgents();
   InteractiveFrame.sync(scene.eyeFrame(), iFrame);
   InteractiveFrame.sync(frame1, auxFrame1);
-  canvas.beginDraw();
   scene.beginDraw();
   canvas.background(0);
   scene.drawFrames();
   scene.endDraw();
-  canvas.endDraw();
-  image(canvas, 0, 0);
+  scene.display();
   if (showMiniMap) {
-    auxCanvas.beginDraw();
     auxScene.beginDraw();
     auxCanvas.background(29, 153, 243);
     auxScene.pg().fill(255, 0, 255, 125);
     auxScene.drawFrames();
     auxScene.drawProjectors(scene.eye(), projectors());
     auxScene.endDraw();
-    auxCanvas.endDraw();
-    // We retrieve the scene upper left coordinates defined above.
-    image(auxCanvas, auxScene.originCorner().x(), auxScene.originCorner().y());
+    auxScene.display();
   }
 }
 
@@ -123,18 +116,5 @@ void eyeDrawing(PGraphics pg) {
     pg.rectMode(CENTER);
     pg.rect(0, 0, 200, 200);
     pg.popStyle();
-  }
-}
-
-void handleAgents() {
-  scene.enableMotionAgent();
-  auxScene.disableMotionAgent();
-  scene.enableKeyboardAgent();
-  auxScene.disableKeyboardAgent();
-  if ((oX < mouseX) && (oY < mouseY) && showMiniMap) {
-    scene.disableMotionAgent();
-    auxScene.enableMotionAgent();
-    scene.disableKeyboardAgent();
-    auxScene.enableKeyboardAgent();
   }
 }

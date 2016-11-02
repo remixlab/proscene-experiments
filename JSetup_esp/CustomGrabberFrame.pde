@@ -51,8 +51,6 @@ public class CustomGrabberFrame extends GenericFrame {
     
     @Override
     public void performInteraction(KeyboardEvent event) {
-      if (bypassKey(event))
-        return;
       if( event.isShiftDown() ) {
         //also possible here is to use Processing keys: UP
         if(event.id()  == TargetKeyAgent.UP_KEY)
