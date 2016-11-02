@@ -55,12 +55,13 @@ void setup() {
   auxScene.showAll();
 
   auxFrame1 = new InteractiveFrame(auxScene);
-  auxFrame1.fromFrame(frame1);
+  auxFrame1.set(frame1);
 
   iFrame = new InteractiveFrame(auxScene);
   //to not scale the iFrame on mouse hover uncomment:
   //iFrame.setHighlightingMode(InteractiveFrame.HighlightingMode.NONE);
-  iFrame.fromFrame(scene.eyeFrame());
+  iFrame.setWorldMatrix(scene.eyeFrame());
+  iFrame.setShape(scene.eyeFrame());
 }
 
 void draw() {
