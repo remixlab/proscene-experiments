@@ -16,7 +16,7 @@ public class CustomScene extends TargetScene {
   }
   
   @Override
-  protected boolean checkIfGrabsInput(KeyboardEvent event) {
+  public boolean checkIfGrabsInput(KeyboardEvent event) {
     return event.key() == 's' || event.key() == 'a' || event.key() == 'r' || event.key() == '1';
   }
 }

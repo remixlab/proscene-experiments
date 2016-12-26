@@ -1,6 +1,4 @@
 public class TargetKeyAgent extends Agent {
-  public static final int LEFT_KEY  = PApplet.LEFT, RIGHT_KEY = PApplet.RIGHT, UP_KEY = PApplet.UP, DOWN_KEY = PApplet.DOWN;
-
   protected boolean        press, release, type;
   protected KeyboardEvent  currentEvent;
 

@@ -20,17 +20,16 @@ public class CustomGrabberFrame extends GenericFrame {
     public void performInteraction(MotionEvent event) {
       switch( event.shortcut().id() ) {
       //it's also possible to use Processing constants such as:
-      //case LEFT:
-      case TargetMouseAgent.LEFT_ID:
+      case LEFT:
         rotate(event);
         break;
-      case TargetMouseAgent.CENTER_ID:
+      case CENTER:
         screenRotate(event);
         break;
-      case TargetMouseAgent.RIGHT_ID:
+      case RIGHT:
         translate(event);
         break;
-      case TargetMouseAgent.WHEEL_ID:
+      case MouseEvent.WHEEL:
         if(scene().is3D() && isEyeFrame())
           translateZ(event);
         else
@@ -42,9 +41,9 @@ public class CustomGrabberFrame extends GenericFrame {
     @Override
     public void performInteraction(ClickEvent event) {
       if (event.clickCount() == 2) {
-        if (event.id() == TargetMouseAgent.LEFT_ID)
+        if (event.id() == LEFT_ID)
           center();
-        if (event.id() == TargetMouseAgent.RIGHT_ID)
+        if (event.id() == RIGHT_ID)
           align();
       }
     }
@@ -53,25 +52,25 @@ public class CustomGrabberFrame extends GenericFrame {
     public void performInteraction(KeyboardEvent event) {
       if( event.isShiftDown() ) {
         //also possible here is to use Processing keys: UP
-        if(event.id()  == TargetKeyAgent.UP_KEY)
+        if(event.id()  == UP_KEY)
           translateY(true);
-        if(event.id()  == TargetKeyAgent.DOWN_KEY)
+        if(event.id()  == DOWN_KEY)
           translateY(false);
-        if(event.id()  == TargetKeyAgent.LEFT_KEY)
+        if(event.id()  == LEFT_KEY)
           translateX(false);
-        if(event.id()  == TargetKeyAgent.RIGHT_KEY)
+        if(event.id()  == RIGHT_KEY)
           translateX(true);
       }
       else {
-        if(event.id()  == TargetKeyAgent.UP_KEY)
+        if(event.id()  == UP_KEY)
           if(gScene.is3D())
             rotateX(true);
-        if(event.id()  == TargetKeyAgent.DOWN_KEY)
+        if(event.id()  == DOWN_KEY)
           if(gScene.is3D())
             rotateY(false);
-        if(event.id()  == TargetKeyAgent.LEFT_KEY)
+        if(event.id()  == LEFT_KEY)
           rotateZ(false);
-        if(event.id()  == TargetKeyAgent.RIGHT_KEY)
+        if(event.id()  == RIGHT_KEY)
           rotateZ(true);
       }
     }
