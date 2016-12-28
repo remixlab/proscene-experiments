@@ -1,57 +1,67 @@
 /**
  * Button 2D.
  * by Jean Pierre Charalambos.
- * 
- * Base class of "2d buttons" that shows how simple is to implement
- * a MouseGrabber which can enable complex mouse interactions.
+ *
+ * An InteractiveFrame-based 2D Button that can be placed anywhere
+ * withih a 3D scene. Feel free to copy it and adapt it to your needs.
  */
 
-public abstract class Button2D extends GrabberObject {
-  public Scene scene;  
-  String myText;
-  PFont myFont;
-  float myWidth;
-  float myHeight;
+public class Button2D {
+  InteractiveFrame iFrame;
   PVector position;
+  String text =  new String();
+  PFont font;
+  float width;
+  float height;
 
-  public Button2D(Scene scn, PVector p, PFont font) {
-    this(scn, p, font, "");
-  }
-
-  public Button2D(Scene scn, PVector p, PFont font, String t) {
-    scene = scn;
-    position = p;
-    myText = t;
-    myFont = font;
-    textFont(myFont);
-    textAlign(LEFT);
+  public Button2D(PVector p, PFont f, String t) {
+    iFrame = new InteractiveFrame(scene);
+    iFrame.removeBindings();
+    iFrame.disableVisualHint();
+    iFrame.setFrontShape(this, "display");
+    iFrame.setPickingShape(this, "highlight");
+    iFrame.setHighlightingMode(InteractiveFrame.HighlightingMode.FRONT_PICKING_SHAPES);
+    setPosition(p);
+    setFont(f);
     setText(t);
-    scene.motionAgent().addGrabber(this);
   }
 
-  public void setText(String text) {
-    myText = text;
-    myWidth = textWidth(myText);
-    myHeight = textAscent() + textDescent();
+  public void setPosition(PVector pos) {
+    position = pos;
   }
 
-  public void display() {
-    pushStyle();    
-    fill(255);
-    if (grabsInput(scene.motionAgent()))
-      fill(255);
-    else
-      fill(100);
-    scene.beginScreenDrawing();
-    text(myText, position.x, position.y, myWidth+1, myHeight);
-    scene.endScreenDrawing();
-    popStyle();
+  public void setFont(PFont f) {
+    this.font = f;
+    update();
   }
-  
-  @Override
-  public boolean checkIfGrabsInput(DOF2Event event) {
-    float x = event.x();
-    float y = event.y();
-    return ((position.x <= x) && (x <= position.x + myWidth) && (position.y <= y) && (y <= position.y + myHeight));
+
+  public void setText(String t) {
+    this.text = t;
+    update();
+  }
+
+  protected void update() {
+    scene.pg().textAlign(PApplet.LEFT);
+    scene.pg().textFont(font);
+    width = scene.pg().textWidth(text);
+    height = scene.pg().textAscent() + scene.pg().textDescent();
+  }
+
+  public void display(PGraphics pg) {
+    pg.pushStyle();
+    pg.fill(255);
+    scene.beginScreenDrawing(pg);
+    scene.pg().textFont(font);
+    pg.text(text, position.x, position.y, width + 1, height);
+    scene.endScreenDrawing(pg);
+    pg.popStyle();
+  }
+
+  public void highlight(PGraphics pg) {
+    pg.noStroke();
+    pg.fill(255, 255, 255, 96);
+    scene.beginScreenDrawing(pg);
+    pg.rect(position.x, position.y, width, height);
+    scene.endScreenDrawing(pg);
   }
 }

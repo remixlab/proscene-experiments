@@ -1,49 +1,42 @@
 public class ClickButton extends Button2D {
   int path;
 
-  public ClickButton(Scene scn, PVector p,  PFont font, int index) {
-    this(scn, p, font, "", index);
+  public ClickButton(PVector p, PFont f, String t, int index) {
+    super(p, f, t);
+    path = index;
+    iFrame.setClickBinding(this, LEFT, 1, "action");
   }
 
-  public ClickButton(Scene scn, PVector p,  PFont font, String t, int index) {
-    super(scn, p, font, t);
-    path = index;
+  public void action(InteractiveFrame frame) {
+    scene.eye().playPath(path);
+    //same as:
+    //frame.scene().eye().playPath(path);
   }
 
   @Override
-  public void performInteraction(ClickEvent event) {
-    if (event.clickCount() == 1)
-      if (path == 0)
-        scene.togglePathsVisualHint();
+  public void display(PGraphics pg) {
+    if (scene.eye().keyFrameInterpolator(path) == null)
+      return;
+    if (iFrame.grabsInput(scene.motionAgent())) {
+      if (scene.eye().keyFrameInterpolator(path).numberOfKeyFrames() > 1)
+        if (scene.eye().keyFrameInterpolator(path).interpolationStarted())
+          setText("stop path " + String.valueOf(path));
+        else
+          setText("play path "  + String.valueOf(path));
       else
-        scene.eye().playPath(path);
+        setText("restore position " + String.valueOf(path));
+    } else {
+      if (scene.eye().keyFrameInterpolator(path).numberOfKeyFrames() > 1)
+        setText("path " + String.valueOf(path));
+      else
+        setText("position " + String.valueOf(path));
+    }
+    super.display(pg);
   }
 
-  public void display() {
-    String text = new String();
-    if (path == 0)
-      if (scene.pathsVisualHint())
-        text = "don't edit camera paths";
-      else
-        text = "edit camera paths";
-    else {
-      if (grabsInput(scene.motionAgent())) {
-        if (scene.eye().keyFrameInterpolator(path).numberOfKeyFrames() > 1)
-          if (scene.eye().keyFrameInterpolator(path).interpolationStarted())
-            text = "stop path ";
-          else
-            text = "play path ";
-        else
-          text = "restore position ";
-      } else {
-        if (scene.eye().keyFrameInterpolator(path).numberOfKeyFrames() > 1)
-          text = "path ";
-        else
-          text = "position ";
-      }
-      text += ((Integer) path).toString();
-    }
-    setText(text);
-    super.display();
+  @Override
+  public void highlight(PGraphics pg) {
+    if (scene.eye().keyFrameInterpolator(path) != null)
+      super.highlight(pg);
   }
 }

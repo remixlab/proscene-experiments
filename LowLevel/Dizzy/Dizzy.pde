@@ -3,20 +3,19 @@
  * by Jean Pierre Charalambos.
  *
  * This example demonstrates how 2D key frames may be used to perform a Prezi-like
- * presentation. 
+ * presentation.
  *
  * Press 'h' to display the key shortcuts and mouse bindings in the console.
  */
 
 import remixlab.proscene.*;
 import remixlab.dandelion.geom.*;
-import remixlab.bias.*;
-import remixlab.bias.event.*;
 
 Scene scene;
 PImage img;
 PFont buttonFont;
-ArrayList buttons;
+Button2D toggleButton;
+ArrayList<Button2D> buttons;
 InteractiveFrame message1;
 InteractiveFrame message2;
 InteractiveFrame image;
@@ -50,16 +49,13 @@ public void setup() {
   // create a camera path and add some key frames:
   // key frames can be added at runtime with keys [j..n]
   scene.loadConfig();
-
-  buttons = new ArrayList(6);
-  for (int i = 0; i < 5; ++i)
-    buttons.add(null);
-
   buttonFont = loadFont("FreeSans-16.vlw");
-  
-  Button2D button = new ClickButton(scene, new PVector(10, 5), buttonFont, 0);
-  h = button.myHeight;
-  buttons.set(0, button);
+  toggleButton = new Button2D(new PVector(10, 7), buttonFont, "");
+  toggleButton.iFrame.setClickBinding(LEFT, 1, "action");
+  toggleButton.iFrame.setFrontShape("frontShape");
+  buttons = new ArrayList<Button2D>();
+  for (int i=0; i<3; ++i)
+    buttons.add(new ClickButton(new PVector(10, toggleButton.height*(i+1) + 7*(i+2)), buttonFont, String.valueOf(i+1), i+1));
 }
 
 public void draw() {
@@ -83,25 +79,16 @@ public void draw() {
   text("but I feel dizzy", 10, 50);
   popMatrix();
 
-  updateButtons();
-  displayButtons();
+  scene.drawFrames();
 }
 
-void updateButtons() {
-  for (int i = 1; i < buttons.size(); i++) {
-    // Check if CameraPathPlayer is still valid
-    if ((buttons.get(i) != null) && (scene.eye().keyFrameInterpolator(i) == null))
-      buttons.set(i, null);
-    // Or add it if needed
-    if ((scene.eye().keyFrameInterpolator(i) != null)	&& (buttons.get(i) == null))
-      buttons.set(i, new ClickButton(scene, new PVector(10, +(i) * (h + 7)), buttonFont, i));
-  }
+void action(InteractiveFrame frame) {
+  scene.togglePathsVisualHint();
+  //same as:
+  //frame.scene().togglePathsVisualHint();
 }
 
-void displayButtons() {
-  for (int i = 0; i < buttons.size(); i++) {
-    Button2D button = (Button2D) buttons.get(i);
-    if (button != null)
-      button.display();
-  }
+void frontShape(PGraphics pg) {
+  toggleButton.setText(scene.pathsVisualHint() ? "don't edit camera paths" : "edit camera paths");
+  toggleButton.display(pg);
 }

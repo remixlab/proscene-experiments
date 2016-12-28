@@ -1,13 +1,13 @@
 /**
  * Sensitivities
  * by Jean Pierre Charalambos.
- * 
+ *
  * This example illustrates the variables that can be fine tuned to control
- * the mouse behavior. 
+ * the mouse behavior.
  *
  * Follow the online indications, noting that the displayed '+' '-' are
  * implemented as interactive clickable buttons to set the value of the variables.
- * 
+ *
  * Press 'd' to reset all variables to their default values.
  * Press 'u' to switch the control between eye frame and interactive frame.
  * Press 'v' to toggle the display of the controls.
@@ -19,12 +19,12 @@ import remixlab.bias.*;
 import remixlab.bias.event.*;
 
 Scene scene;
-ArrayList<Button2D> buttons;	
+ArrayList<Button2D> buttons;
 int xM = 10;
 InteractiveFrame interactiveFrame;
 boolean isIFrame = false;
 boolean dispControls = true;
-PFont myFont;
+PFont font;
 float defRotSens, defTransSens, defSpngSens, defWheelSens, defDampFrict;
 
 //Choose one of P3D for a 3D scene, or P2D or JAVA2D for a 2D scene
@@ -32,9 +32,9 @@ String renderer = P3D;
 
 void setup() {
   size(840, 560, renderer);
-  
-  myFont = loadFont("FreeSans-16.vlw");
-  textFont(myFont);
+
+  font = loadFont("FreeSans-16.vlw");
+  textFont(font);
   textAlign(LEFT);
 
   scene = new Scene(this);
@@ -45,7 +45,7 @@ void setup() {
   interactiveFrame.translate(60, 60);
 
   buttons = new ArrayList();
-  
+
   //init defaults (eye and ingeractiveFrame are the same):
   defRotSens   = interactiveFrame.rotationSensitivity();
   defTransSens = interactiveFrame.translationSensitivity();
@@ -53,48 +53,46 @@ void setup() {
   defWheelSens = interactiveFrame.wheelSensitivity();
   defDampFrict = interactiveFrame.damping();
 
-  buttons.add(new ClickButton(scene, new PVector(xM + 210, 50), myFont, "+", Sensitivity.ROTATION, true));	
-  buttons.add(new ClickButton(scene, new PVector((xM + 210 + ((ClickButton)buttons.get(buttons.size()-1)).myWidth + 10), 50), myFont, "-", Sensitivity.ROTATION, false));		
-  buttons.add(new ClickButton(scene, new PVector(xM + 210, 70), myFont, "+", Sensitivity.TRANSLATION, true));		
-  buttons.add(new ClickButton(scene, new PVector((xM + 210 + ((ClickButton)buttons.get(buttons.size()-1)).myWidth + 10), 70), myFont, "-", Sensitivity.TRANSLATION, false));		
-  buttons.add(new ClickButton(scene, new PVector(xM + 210, 90), myFont, "+", Sensitivity.SPINNING, true));		
-  buttons.add(new ClickButton(scene, new PVector((xM + 210 + ((ClickButton)buttons.get(buttons.size()-1)).myWidth + 10), 90), myFont, "-", Sensitivity.SPINNING, false)); 		
-  buttons.add(new ClickButton(scene, new PVector(xM + 210, 110), myFont, "+", Sensitivity.WHEEL, true));		
-  buttons.add(new ClickButton(scene, new PVector((xM + 210 + ((ClickButton)buttons.get(buttons.size()-1)).myWidth + 10), 110), myFont, "-", Sensitivity.WHEEL, false));  		
-  buttons.add(new ClickButton(scene, new PVector(xM + 210, 130), myFont, "+", Sensitivity.DAMPING, true));		
-  buttons.add(new ClickButton(scene, new PVector((xM + 210 + ((ClickButton)buttons.get(buttons.size()-1)).myWidth + 10), 130), myFont, "-", Sensitivity.DAMPING, false));
+  buttons.add(new ClickButton(new PVector(xM + 210, 50), font, "+", Sensitivity.ROTATION, true));
+  buttons.add(new ClickButton(new PVector((xM + 210 + ((ClickButton)buttons.get(buttons.size()-1)).width + 10), 50), font, "-", Sensitivity.ROTATION, false));
+  buttons.add(new ClickButton(new PVector(xM + 210, 70), font, "+", Sensitivity.TRANSLATION, true));
+  buttons.add(new ClickButton(new PVector((xM + 210 + ((ClickButton)buttons.get(buttons.size()-1)).width + 10), 70), font, "-", Sensitivity.TRANSLATION, false));
+  buttons.add(new ClickButton(new PVector(xM + 210, 90), font, "+", Sensitivity.SPINNING, true));
+  buttons.add(new ClickButton(new PVector((xM + 210 + ((ClickButton)buttons.get(buttons.size()-1)).width + 10), 90), font, "-", Sensitivity.SPINNING, false));
+  buttons.add(new ClickButton(new PVector(xM + 210, 110), font, "+", Sensitivity.WHEEL, true));
+  buttons.add(new ClickButton(new PVector((xM + 210 + ((ClickButton)buttons.get(buttons.size()-1)).width + 10), 110), font, "-", Sensitivity.WHEEL, false));
+  buttons.add(new ClickButton(new PVector(xM + 210, 130), font, "+", Sensitivity.DAMPING, true));
+  buttons.add(new ClickButton(new PVector((xM + 210 + ((ClickButton)buttons.get(buttons.size()-1)).width + 10), 130), font, "-", Sensitivity.DAMPING, false));
 
   scene.setRadius(150);
   scene.showAll();
-}	
+}
 
 void draw() {
-  background(0); 
+  background(0);
 
   // Draw 3D scene first
   fill(204, 102, 0, 150);
-  scene.drawTorusSolenoid();	
+  scene.drawTorusSolenoid();
   // Save the current model view matrix
   pushMatrix();
   // Multiply matrix to get in the frame coordinate system.
   //applyMatrix(Scene.toPMatrix(interactiveFrame.matrix())); //is possible but inefficient
   interactiveFrame.applyTransformation();//very efficient
   // Draw an axis using the Scene static function
-  scene.drawAxes(20);				
+  scene.drawAxes(20);
   // Draw a second box
   // Draw a second box
   if (scene.motionAgent().defaultGrabber() == interactiveFrame) {
     fill(0, 255, 255);
-    scene.drawTorusSolenoid();    
-  }
-  else if (interactiveFrame.grabsInput(scene.motionAgent())) {
+    scene.drawTorusSolenoid();
+  } else if (interactiveFrame.grabsInput(scene.motionAgent())) {
     fill(255, 0, 0);
     scene.drawTorusSolenoid();
-  }
-  else {
+  } else {
     fill(0, 0, 255, 150);
     scene.drawTorusSolenoid();
-  }			
+  }
   popMatrix();
 
   // Finally draw 2D controls on top of the 3D scene
@@ -108,8 +106,7 @@ void displayControls() {
     displayText("Press 'v' to display info/controls", xM, 10);
     scene.endScreenDrawing();
     return;
-  }
-  else {
+  } else {
     scene.beginScreenDrawing();
     displayText("Press 'v' to hide info/controls", xM, 10);
     scene.endScreenDrawing();
@@ -121,8 +118,7 @@ void displayControls() {
     scene.beginScreenDrawing();
     displayText("Interactive frame sensitivities (Press 'u' to view/set those of Eye frame)", xM, 30);
     scene.endScreenDrawing();
-  }
-  else {
+  } else {
     iFrame = scene.eyeFrame();
     scene.beginScreenDrawing();
     displayText("Eye frame sensitivities (Press 'u' to view/set those of Interactive frame)", xM, 30);
@@ -131,20 +127,20 @@ void displayControls() {
 
   fill(200, 255, 0);
   scene.beginScreenDrawing();
-  displayText(equals(iFrame.rotationSensitivity(), defRotSens) ? "Rotation sensitivity " : "Rotation sensitivity * ", xM, 50);		
+  displayText(equals(iFrame.rotationSensitivity(), defRotSens) ? "Rotation sensitivity " : "Rotation sensitivity * ", xM, 50);
   displayText(String.format("%.2f", iFrame.rotationSensitivity()), xM + 165, 50);
-  displayText(equals(iFrame.translationSensitivity(), defTransSens) ? "Translation sensitivity " : "Translation sensitivity * ", xM, 70);		
+  displayText(equals(iFrame.translationSensitivity(), defTransSens) ? "Translation sensitivity " : "Translation sensitivity * ", xM, 70);
   displayText(String.format("%.2f", iFrame.translationSensitivity()), xM + 165, 70);
-  displayText(equals(iFrame.spinningSensitivity(), defSpngSens) ? "Spinning sensitivity " : "Spinning sensitivity * ", xM, 90);		
-  displayText(String.format("%.2f", iFrame.spinningSensitivity()), xM + 165, 90);  
+  displayText(equals(iFrame.spinningSensitivity(), defSpngSens) ? "Spinning sensitivity " : "Spinning sensitivity * ", xM, 90);
+  displayText(String.format("%.2f", iFrame.spinningSensitivity()), xM + 165, 90);
   displayText(equals(iFrame.wheelSensitivity(), defWheelSens) ? "Wheel sensitivity " : "Wheel sensitivity * ", xM, 110);
-  displayText(String.format("%.2f", iFrame.wheelSensitivity()), xM + 165, 110);  
+  displayText(String.format("%.2f", iFrame.wheelSensitivity()), xM + 165, 110);
   displayText(equals(iFrame.damping(), defDampFrict) ? "Damping " : "Damping * ", xM, 130);
   displayText(String.format("%.2f", iFrame.damping()), xM + 165, 130);
   scene.endScreenDrawing();
 
-  for (int i = 0; i < buttons.size(); i++)
-    ( (ClickButton) buttons.get(i)).display();
+  // draw all buttons
+  scene.drawFrames();
 
   fill(200);
   if (!areDefaultsSet(iFrame)) {
@@ -166,7 +162,7 @@ void decreaseSensitivity(Sensitivity sens) {
     decreaseSensitivity(interactiveFrame, sens);
   else
     decreaseSensitivity(scene.eyeFrame(), sens);
-}	
+}
 
 void increaseSensitivity(InteractiveFrame iFrame, Sensitivity sens) {
   changeSensitivity(iFrame, sens, true);
@@ -174,7 +170,7 @@ void increaseSensitivity(InteractiveFrame iFrame, Sensitivity sens) {
 
 void decreaseSensitivity(InteractiveFrame iFrame, Sensitivity sens) {
   changeSensitivity(iFrame, sens, false);
-}	
+}
 
 void changeSensitivity(InteractiveFrame iFrame, Sensitivity sens, boolean increase) {
   float step = 1;
@@ -184,7 +180,7 @@ void changeSensitivity(InteractiveFrame iFrame, Sensitivity sens, boolean increa
     step = increase ? 0.5f : -0.5f;
     res = iFrame.rotationSensitivity() + step;
     if (0<= res && res <=10)
-      iFrame.setRotationSensitivity(res);			
+      iFrame.setRotationSensitivity(res);
     break;
   case TRANSLATION:
     step = increase ? 0.5f : -0.5f;
@@ -197,7 +193,7 @@ void changeSensitivity(InteractiveFrame iFrame, Sensitivity sens, boolean increa
     res = iFrame.spinningSensitivity() + step;
     if (0<= res && res <=100)
       iFrame.setSpinningSensitivity(res);
-    break;	
+    break;
   case WHEEL:
     step = increase ? 5 : -5;
     res = iFrame.wheelSensitivity() + step;
@@ -215,11 +211,11 @@ void changeSensitivity(InteractiveFrame iFrame, Sensitivity sens, boolean increa
 
 boolean areDefaultsSet(InteractiveFrame iFrame) {
   if (   equals(iFrame.rotationSensitivity(), defRotSens)
-      && equals(iFrame.translationSensitivity(), defTransSens)
-      && equals(iFrame.spinningSensitivity(), defSpngSens)
-      && equals(iFrame.wheelSensitivity(), defWheelSens)
-      && equals(iFrame.damping(), defDampFrict)
-      )
+    && equals(iFrame.translationSensitivity(), defTransSens)
+    && equals(iFrame.spinningSensitivity(), defSpngSens)
+    && equals(iFrame.wheelSensitivity(), defWheelSens)
+    && equals(iFrame.damping(), defDampFrict)
+    )
     return true;
   return false;
 }
@@ -244,7 +240,7 @@ static boolean equals(float a, float b) {
   if (abs(a-b) < 0.01f)
     return true;
   return false;
-}	
+}
 
 void keyPressed() {
   if (key == 'u' || key == 'U') {
@@ -254,11 +250,11 @@ void keyPressed() {
     dispControls = !dispControls;
     for (int i = 0; i < buttons.size(); i++)
       if (dispControls)
-        scene.motionAgent().addGrabber(buttons.get(i)); //(((ClickButton) buttons.get(i));
+        scene.motionAgent().addGrabber(buttons.get(i).iFrame); //(((ClickButton) buttons.get(i));
       else
-        scene.motionAgent().removeGrabber(buttons.get(i));
-        //scene.inputHandler().removeFromAllAgentPools((ClickButton) buttons.get(i));
-  }		
+        scene.motionAgent().removeGrabber(buttons.get(i).iFrame);
+    //scene.inputHandler().removeFromAllAgentPools((ClickButton) buttons.get(i));
+  }
   if (key == 'd' || key == 'D') {
     if ( isIFrame )
       setDefaults( interactiveFrame );
