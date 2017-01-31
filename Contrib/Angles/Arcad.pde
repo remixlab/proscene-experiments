@@ -8,7 +8,7 @@ class Arcad {
     // angle=a;
     vec2Phi=new PVector();
     repere=new InteractiveFrame(scene);
-    dragueur=new InteractiveFrame(scene);  
+    dragueur=new InteractiveFrame(scene);
     rotateur=new InteractiveFrame(scene, repere);
     dragueur.setConstraint(drag);
     rotateur.setConstraint(planaire);
@@ -19,8 +19,8 @@ class Arcad {
     dragueur.setPosition(new Vec(1.2*axe.x, 1.2*axe.y, 1.2*axe.z));
     rotateur.setTranslation(new Vec(200*cos(QUARTER_PI), 200*sin(QUARTER_PI), 0));
   }
-  
-  void draw() {  
+
+  void draw() {
     stroke(0);
     scene.drawAxes(200);
     ligne(Scene.toPVector(dragueur.position()), or);
@@ -38,30 +38,30 @@ class Arcad {
     translate(0, 0, 3);
 
     stroke(255, 0, 0);
-    ligne(or, vec2Phi); 
+    ligne(or, vec2Phi);
 
     rotateur.setTranslation(Scene.toVec(normaliser(Scene.toPVector(rotateur.translation()), 200)));
     sym=PVector.mult(Scene.toPVector(rotateur.translation()), -2);
     rotateur.applyTransformation();
     ligne(sym, or);
-    fill(255, 255, 0); 
-    noStroke();  
+    fill(255, 255, 0);
+    noStroke();
     sphere(15);
     scene.drawAxes(100);
     translate(sym.x, sym.y, sym.z);
     fill(255);
     sphere(15);
-    scene.drawAxes(100); 
+    scene.drawAxes(100);
     sym=Scene.toPVector(rotateur.inverseCoordinatesOf(Scene.toVec(sym)));
-    popMatrix(); 
+    popMatrix();
 
     pushMatrix();
     dragueur.applyTransformation();
     fill(255, 0, 0);
     sphere(7);
-    popMatrix();   
+    popMatrix();
 
-    PVector w= Scene.toPVector(dragueur.translation().get()); 
+    PVector w= Scene.toPVector(dragueur.translation().get());
     w.normalize();
     w.mult(lon);
     repere.setPosition(Scene.toVec(w));
@@ -72,7 +72,7 @@ class Arcad {
     float si=rotateur.translation().y()/200.0;
     float angleQuat=acos(co);
     if (si<0) angleQuat=TWO_PI-angleQuat;
-    println(angleQuat);
+    //println(angleQuat);
     vec2Phi=new PVector(200.0*(sq(co)-sq(si)), 400.0*co*si, 0);
     dessinerArc(angleQuat, color(250, 60, 170));
   }
@@ -91,7 +91,7 @@ class Arcad {
     translate(r, 0, 0);
     box(18);
     popMatrix();
-    beginShape(QUAD_STRIP); 
+    beginShape(QUAD_STRIP);
 
     for (int a=0;a<=100;a++) {
       float aa=anglArc/100*a;
@@ -100,7 +100,7 @@ class Arcad {
     }
     endShape();
 
-    beginShape(TRIANGLE_FAN); 
+    beginShape(TRIANGLE_FAN);
     fill(150, 220, 0, 254);
     vertex(0, 0, 0);
     fill(100, 255, 250, 254);
@@ -114,12 +114,12 @@ class Arcad {
     rotateZ(anglArc);
     translate(r, 0, 0);
     fill(0);
-    float angleRot=2.0*angleQnion; 
+    float angleRot=2.0*angleQnion;
     if (angleRot>TWO_PI) angleRot-=TWO_PI;
     if (anglArc<0) {
       rotateX(HALF_PI);
     }
-    else { 
+    else {
       rotateX(-HALF_PI);
     }
     fill(255, 55, 55);
@@ -128,7 +128,7 @@ class Arcad {
     popMatrix();
     popMatrix();
     float angleQnion1=(-TWO_PI+ anglArc)/2.0;
-    unText1("  angle du quaternion 2: "+ String.format("%.0f", degrees(angleQnion1))+"°", sym); 
+    unText1("  angle du quaternion 2: "+ String.format("%.0f", degrees(angleQnion1))+"°", sym);
     unText1("  angle du quaternion 2: "+ String.format("%.0f", degrees(angleQnion))+"°", Scene.toPVector(rotateur.position()));
     PVector extr= Scene.toPVector(repere.inverseCoordinatesOf(new Vec(r*cos(angleRot), r*sin(angleRot), 0)));
     unText1("point  B = rot( A ) ", extr);

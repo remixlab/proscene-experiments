@@ -1,7 +1,7 @@
 /**
  * Angles
  * by Jacques Maire (http://www.alcys.com/)
- * 
+ *
  * Part of proscene classroom: http://www.openprocessing.org/classroom/1158
  * Check also the collection: http://www.openprocessing.org/collection/1438
  *
@@ -42,7 +42,7 @@ void setup() {
   scene.camera().setPosition(new Vec(0, 0, 900));
 
   arc1=new Arcad(new PVector(-50, -200, 200));
-  or=new PVector(0, 0, 0);  
+  or=new PVector(0, 0, 0);
 }
 
 void draw() {

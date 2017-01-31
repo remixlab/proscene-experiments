@@ -17,9 +17,9 @@ public class Arbre {
     // arborescence des framesr
     reperes[0] = new InteractiveFrame(scene);
     reperes[1] = new InteractiveFrame(scene, reperes[0]);
-    reperes[2] = new InteractiveFrame(scene, reperes[0]);      
+    reperes[2] = new InteractiveFrame(scene, reperes[0]);
     reperes[3] = new InteractiveFrame(scene, reperes[0]);
-    reperes[4] = new InteractiveFrame(scene, reperes[3]);    
+    reperes[4] = new InteractiveFrame(scene, reperes[3]);
     // Initialize frames
 
     reperes[1].setTranslation(0, 0, 0); // cone depart
@@ -33,11 +33,11 @@ public class Arbre {
     reperes[4].setRotation(new Quat(new Vec(0.0f, 0.0f, 1.0f), -0.0f));
 
     //graphics handers
- 
-    reperes[1].addGraphicsHandler(this, "drawConeDepart");
-    reperes[2].addGraphicsHandler(this, "drawConeArrivee");
-    reperes[3].addGraphicsHandler(this, "drawRepere3");
-    reperes[4].addGraphicsHandler(this, "drawBras");
+
+    reperes[1].setShape(this, "drawConeDepart");
+    reperes[2].setShape(this, "drawConeArrivee");
+    reperes[3].setShape(this, "drawRepere3");
+    reperes[4].setShape(this, "drawBras");
 
     // Set frame constraints
     WorldConstraint contrainteDeLaBase = new WorldConstraint();
@@ -56,14 +56,14 @@ public class Arbre {
     reperes[1].setConstraint(rotule);
     reperes[2].setConstraint(rotule);
   }
- 
+
   public void drawRepere3(PGraphics pg) {
-   
+
     pg.fill(0, 0, 255);
     pg.stroke(0);
     drawCone(pg, -100, 100, 4, 4, 32);
     Vec tr=reperes[4].translation();
-  
+
     pg.pushMatrix();
     pg.translate(tr.x(), -tr.y(), -tr.z());
     pg.box(10);
@@ -71,17 +71,17 @@ public class Arbre {
     pg. pushMatrix();
     pg.rotateZ(quatQ.angle());
     pg.translate( tr.x(), tr.y(), tr.z());
-    pg.box(10);  
+    pg.box(10);
     pg.popMatrix();
     pg.pushMatrix();
     pg.rotateZ(quatQ.angle());
     pg.translate( tr.x(), -tr.y(), -tr.z());
-    pg.box(10); 
+    pg.box(10);
     pg.stroke(0);
     pg.strokeWeight(10);
     pg.line(0, 2.0*tr.y(), 2.0*tr.z(), 0, 0, 0 );
      pg.strokeWeight(1);
-    pg.popMatrix(); 
+    pg.popMatrix();
 
     pg.fill(0, 255, 0, 50);
     pg.arc(0, 0, 200, 200, 0, quatQ.angle());
@@ -91,7 +91,7 @@ public class Arbre {
     pg.translate(0, 0, tr.z());
     pg.arc(0, 0, diag*2.0, diag*2.0, alpha, alpha+ quatQ.angle());
     pg.popMatrix();
-    pg.pushMatrix();  
+    pg.pushMatrix();
     pg.translate(0, 0, -tr.z());
     pg.arc(0, 0, diag*2.0, diag*2.0, -alpha, -alpha+ quatQ.angle());
     pg.popMatrix();
@@ -104,7 +104,7 @@ public class Arbre {
     pg.sphere(10);
     Vec tr=reperes[4].translation();
     pg.stroke(0);
-    pg.strokeWeight(10); 
+    pg.strokeWeight(10);
     pg.line(0, 0, 0, 0, -2.0* tr.y(), -2.0* tr.z());
     pg.strokeWeight(1);
   }
@@ -112,7 +112,7 @@ public class Arbre {
     if ( scene.mouseAgent().inputGrabber() != reperes[2] ) fill(255, 0, 0, 75);
     else fill(255, 255, 0);
     Vec tr=reperes[4].translation();
-    float ray=sqrt(sq(tr.z())+sq(tr.y()));    
+    float ray=sqrt(sq(tr.z())+sq(tr.y()));
     drawCone(pg, tr.x(), tr.x()+10, ray, ray, 32);
     drawCone(pg, 0, 100, 2, 2, 10);
   }
@@ -122,7 +122,7 @@ public class Arbre {
     else fill(255, 255, 0);
     // drawCone(pg, 0, 50, 0, 30, 32);
     Vec tr=reperes[4].translation();
-    float ray=sqrt(sq(tr.z())+sq(tr.y()));    
+    float ray=sqrt(sq(tr.z())+sq(tr.y()));
     drawCone(pg, tr.x(), tr.x()+10, ray, ray, 32);
     drawCone(pg, 0, 100, 2, 2, 10);
   }
@@ -149,7 +149,7 @@ public class Arbre {
 
   void actualiser() {
     depart= reperes[1].localInverseCoordinatesOf(new Vec(0, 0, 1));
-    arrivee= reperes[2].localInverseCoordinatesOf(new Vec(0, 0, 1));  
+    arrivee= reperes[2].localInverseCoordinatesOf(new Vec(0, 0, 1));
     quatQ=new Quat(depart.cross(arrivee), acos(depart.dot(arrivee)));
     //quatQ est le quaternion de la rotation qui transforme depart dans arrivee
     reperes[3].setZAxis(quatQ.axis());

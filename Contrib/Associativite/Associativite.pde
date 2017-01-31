@@ -1,7 +1,7 @@
 /**
  * Associativite
  * by Jacques Maire (http://www.alcys.com/)
- * 
+ *
  * Part of proscene classroom: http://www.openprocessing.org/classroom/1158
  * Check also the collection: http://www.openprocessing.org/collection/1438
  *
@@ -30,7 +30,7 @@ void setup() {
   textFont(font);
   raySphere=400;
   zplan=-500;
-  nord=new PVector(0, 0, raySphere); 
+  nord=new PVector(0, 0, raySphere);
   or=new PVector(0, 0, 0);
   scene=new Scene(this);
   scene.setRadius(1000);
@@ -49,7 +49,7 @@ void setup() {
   ar12=new Arcal(Quat.multiply(arc2.quat, arc1.quat), arc1.depart, arc2.arrivee, "arc2 x arc1", 0);
   ar23=new Arcal(Quat.multiply(arc3.quat, arc2.quat), arc2.depart, arc3.arrivee, "arc3 x arc2", 0);
   ar1_23=new Arcal(Quat.multiply(ar23.quat, arc1.quat), arc1.depart, ar23.arrivee, "( arc3 x arc2 ) x arc1", 0);
-  ar12_3=new Arcal(Quat.multiply(arc3.quat, ar12.quat), ar12.depart, arc3.arrivee, " arc3 x (arc2 x arc1)", 80);  
+  ar12_3=new Arcal(Quat.multiply(arc3.quat, ar12.quat), ar12.depart, arc3.arrivee, " arc3 x (arc2 x arc1)", 80);
   scene.camera().setPosition(new Vec(0, 0, 1800));
   montretout=false;
 }

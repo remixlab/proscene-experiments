@@ -1,7 +1,7 @@
 /**
  * Geometrie Projective
  * by Jacques Maire (http://www.alcys.com/)
- * 
+ *
  * Part of proscene classroom: http://www.openprocessing.org/classroom/1158
  * Check also the collection: http://www.openprocessing.org/collection/1438
  *
@@ -47,8 +47,8 @@ void setup() {
   dragueur = new InteractiveFrame(scene);
   rotateur=new InteractiveFrame(scene);
   repere = new InteractiveFrame(scene, dragueur);
-  repere.setConstraint(pivot);  
-  dragueur.setConstraint(drag);    
+  repere.setConstraint(pivot);
+  dragueur.setConstraint(drag);
   rotateur.setConstraint(planaire);
 
   dragueur.setPosition(new Vec(0, 0, 150));
@@ -62,17 +62,17 @@ void setup() {
 }
 
 void draw() {
-  background(255);  
+  background(255);
   scene.drawGrid(100, 4);
   rotateur.setTranslation(Scene.toVec(normaliser(Scene.toPVector(rotateur.translation()), 30)));
   pushMatrix();
   dragueur.applyTransformation();
   pushMatrix();
   rotateur.applyTransformation();
-  fill(255, 0, 0); 
-  noStroke();  
+  fill(255, 0, 0);
+  noStroke();
   sphere(3);
-  popMatrix();    
+  popMatrix();
   noStroke();
   fill(255, 255, 0);
   sphere(3);

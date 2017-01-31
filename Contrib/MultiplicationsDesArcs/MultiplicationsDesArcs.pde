@@ -1,7 +1,7 @@
 /**
  * Multiplications des Arcs
  * by Jacques Maire (http://www.alcys.com/)
- * 
+ *
  * Part of proscene classroom: http://www.openprocessing.org/classroom/1158
  * Check also the collection: http://www.openprocessing.org/collection/1438
  *
@@ -24,13 +24,13 @@ Orienteur orient1, orient2, orient0;
 
 void setup() {
   size(640, 640, P3D);
-  
+
   scene=new Scene(this);
   scene.setGridVisualHint(false);
-  scene.setRadius(550);  
+  scene.setRadius(550);
   scene.camera().setPosition(new Vec(0, 0, 1000));
   scene.showAll();
-  
+
   lon=400;
   or=new PVector(0, 0, 0);
   n1=new PVector();
@@ -77,14 +77,14 @@ void setup() {
   plan2.setRotation(new Quat(new Vec(0, 0, 1), PI/5));
   plan2.setTranslation(new Vec(0, 0, 0));
   plan1.setConstraint(pivot);
-  plan2.setConstraint(pivot);  
+  plan2.setConstraint(pivot);
   font = loadFont("FreeSans-24.vlw");
-  textFont(font);  
+  textFont(font);
   colorMode(RGB);
 }
 
 void draw() {
-  background(#f5a500); 
+  background(#f5a500);
 
   pushMatrix();
   frameM.applyTransformation();
@@ -107,12 +107,12 @@ void draw() {
   sphere(12);
   fill(255);
   popMatrix();
-  PVector w= Scene.toPVector(dragueur1.position().get()); 
+  PVector w= Scene.toPVector(dragueur1.position().get());
   w.normalize();
   axe1=w.get();
   w.mult(lon);
   repere1.setPosition(Scene.toVec(w));
-  PVector w1= Scene.toPVector(dragueur2.position().get()); 
+  PVector w1= Scene.toPVector(dragueur2.position().get());
   w1.normalize();
   axe2=w1.get();
   w1.mult(lon);
@@ -126,7 +126,7 @@ void draw() {
   repere2.setZAxis(Scene.toVec(w1));
   repere2.setXAxis(Scene.toVec(n0));
 
-  ligne(or, Scene.toPVector(plan1.position()));  
+  ligne(or, Scene.toPVector(plan1.position()));
   ligne(or, Scene.toPVector(plan2.position()));
 
   pushMatrix();
@@ -136,22 +136,22 @@ void draw() {
   plan1.applyTransformation();
   fill(255, 255, 0);
   box(10);
-  popMatrix(); 
+  popMatrix();
   popMatrix();
   pushMatrix();
   repere2.applyTransformation();
-  // scene.drawAxes(50); 
+  // scene.drawAxes(50);
   pushMatrix();
   plan2.applyTransformation();
   fill(255, 255, 0);
   box(10);
 
   popMatrix();
-  popMatrix();  
+  popMatrix();
   n1=Scene.toPVector(plan1.inverseTransformOf(new Vec(0, lon, 0)));
-  n2=Scene.toPVector(plan2.inverseTransformOf(new Vec(0, lon, 0))); 
-  //DESSINER LES 3 PLANS 
-  dessinePlan(Scene.toPVector(repere1.position()), Scene.toPVector(repere2.position()), 50, 50, 135);     
+  n2=Scene.toPVector(plan2.inverseTransformOf(new Vec(0, lon, 0)));
+  //DESSINER LES 3 PLANS
+  dessinePlan(Scene.toPVector(repere1.position()), Scene.toPVector(repere2.position()), 50, 50, 135);
   intersec=  intersection();
   dessinePlan(intersec, Scene.toPVector(repere1.position()), 105, 50, 50);
   dessinePlan(intersec, Scene.toPVector(repere2.position()), 40, 135, 55);
@@ -171,21 +171,21 @@ void draw() {
   triangle3D(proj1, pointM1, pointM2, 115, 160, 100);
 
   triangle3D(proj2, pointM1, pointM2, 180, 185, 80);
-  triangle3D(proj2, pointM1, pointM3, 185, 180, 80); 
+  triangle3D(proj2, pointM1, pointM3, 185, 180, 80);
 
-  triangle3D(proj3, pointM1, pointM, 70, 90, 135);   
+  triangle3D(proj3, pointM1, pointM, 70, 90, 135);
   triangle3D(proj3, pointM1, pointM3, 75, 85, 135);
   orient1.place( Scene.toPVector(repere1.position()), intersec, n1);
-  orient2.place( Scene.toPVector(repere2.position()), intersec, n2);  
-  orient0.place( Scene.toPVector(repere2.position()), Scene.toPVector(repere1.position()), n0);  
+  orient2.place( Scene.toPVector(repere2.position()), intersec, n2);
+  orient0.place( Scene.toPVector(repere2.position()), Scene.toPVector(repere1.position()), n0);
   orient1.draw();
   orient2.draw();
   orient0.draw();
   stroke(0, 255, 0);
   strokeWeight(2);
   calculerLesArcs();
-  
-  //cercle1 --------------------------------------------------------------    
+
+  //cercle1 --------------------------------------------------------------
   PVector   tr=Scene.toPVector(repere1.transformOf(Scene.toVec(comb(1, proj1, -1, Scene.toPVector(repere1.position())))));
   PVector om=Scene.toPVector(repere1.coordinatesOf(Scene.toVec(pointM)));
   float alph=acos(om.x/sqrt(om.x*om.x+om.y*om.y));
@@ -199,13 +199,13 @@ void draw() {
   fill(240, 130, 130);
 
   ellipse(0, 0, 2.0*ra, 2.0*ra);
-  translate(0, 0, -4);     
+  translate(0, 0, -4);
   rotateZ(alph);
   translate(0, 0, -2);
   dessinerArc(arc1, color(255, 0, 0), ra);
   popMatrix();
 
-  //cercle2---------------------------------------------------------------- 
+  //cercle2----------------------------------------------------------------
   tr=Scene.toPVector(repere2.transformOf(Scene.toVec(comb(1, proj2, -1, Scene.toPVector(repere2.position())))));
   om=Scene.toPVector(repere2.coordinatesOf(Scene.toVec(pointM2)));
   ra=(comb(1, proj2, -1, pointM1)).mag();
@@ -215,16 +215,16 @@ void draw() {
   repere2.applyTransformation();
   translate(tr.x, tr.y, tr.z+4);
   stroke(0, 0, 255);
-  strokeWeight(4); 
+  strokeWeight(4);
   fill(100, 100, 255);
   ellipse(0, 0, 2.0*ra, 2.0*ra);
-  strokeWeight(1); 
+  strokeWeight(1);
   translate(0, 0, -4);
   rotateZ(alph);
   translate(0, 0, -3);
   dessinerArc(arc2, color(0, 0, 255), ra);
   popMatrix();
-  
+
   //cercle3----------------------------------------------------------------
   tr=Scene.toPVector(repere3.transformOf(Scene.toVec(comb(1, proj3, -1, Scene.toPVector(repere3.position())))));
   om=Scene.toPVector(repere3.coordinatesOf(Scene.toVec(pointM)));
@@ -239,10 +239,10 @@ void draw() {
   fill(200, 255, 0);
   translate(0, 0, 6);
   stroke(0, 200, 0);
-  strokeWeight(4);  
+  strokeWeight(4);
   ellipse(0, 0, 2.0*ra, 2.0*ra);
   popMatrix();//--------------------------------------------------------------
-  strokeWeight(1);    
+  strokeWeight(1);
   afficherLettres();
 }
 
@@ -293,10 +293,10 @@ void calculerLesArcs() {
 
 float calculAngle(PVector uu, PVector vv, PVector nor) {
   PVector u=uu.get();
-  u.normalize();  
+  u.normalize();
   PVector v=vv.get();
   v.normalize();
-  float rep=acos(u.dot(v));  
+  float rep=acos(u.dot(v));
   float si=nor.dot(uu.cross(vv));
   if (si<0) rep=-rep;
   return rep;
