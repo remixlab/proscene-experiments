@@ -9,25 +9,35 @@
  * Press 'h' to display the key shortcuts and mouse bindings in the console.
  */
 
-import remixlab.proscene.*;
-import remixlab.dandelion.core.*;
-import remixlab.dandelion.geom.*;
+import proscene.processing.*;
+import proscene.input.*;
+import proscene.input.event.*;
+import proscene.core.*;
+import proscene.primitives.*;
 
 Scene scene;
-InteractiveFrame iFrame;
+Node iFrame;
 PShader prosceneShader;
-Mat pmv;
+Matrix pmv;
 PMatrix3D pmatrix = new PMatrix3D( );
 
 void setup() {
   size(640, 360, P3D);
   prosceneShader = loadShader("FrameFrag.glsl", "FrameVert_pmv.glsl");
   scene = new Scene(this);
-  scene.setMatrixHelper(new MatrixStackHelper(scene));
-  iFrame = new InteractiveFrame(scene);
-  iFrame.setPickingPrecision(InteractiveFrame.PickingPrecision.ADAPTIVE);
-  iFrame.setGrabsInputThreshold(scene.radius()/4);
-  iFrame.translate(new Vec(30, 30, 0));
+  scene.setMatrixHandler(new MatrixHandler(scene));
+
+  Node eye = new InteractiveNode(scene);
+
+  scene.setEye(eye);
+  scene.setFieldOfView((float) Math.PI / 3);
+  scene.setDefaultNode(eye);
+  scene.fitBall();
+
+  iFrame = new InteractiveNode(scene);
+  iFrame.setPrecision(Node.Precision.ADAPTIVE);
+  iFrame.setPrecisionThreshold(scene.radius()/4);
+  iFrame.translate(new Vector(30, 30, 0));
 }
 
 void draw() {
@@ -43,15 +53,13 @@ void draw() {
   //iFrame.applyTransformation();//also possible here
   //model-view changed:
   setUniforms();
-  if (scene.motionAgent().defaultGrabber() == iFrame) {
+  if (scene.mouseAgent().defaultGrabber() == iFrame) {
     fill(0, 255, 255);
     scene.drawTorusSolenoid();
-  }
-  else if (iFrame.grabsInput(scene.motionAgent())) {
+  } else if (iFrame.grabsInput(scene.mouseAgent())) {
     fill(255, 0, 0);
     scene.drawTorusSolenoid();
-  }
-  else {
+  } else {
     fill(0, 0, 255, 150);
     scene.drawTorusSolenoid();
   } 
@@ -60,14 +68,53 @@ void draw() {
 
 public void keyPressed() {
   if ( key == 'i')
-    scene.motionAgent().setDefaultGrabber(scene.motionAgent().defaultGrabber() == iFrame ? scene.eye().frame() : iFrame);
+    scene.mouseAgent().shiftDefaultGrabber(iFrame, (Node)scene.eye());
 }
 
 //Whenever the model-view (or projection) matrices changes
 // we need to update the shader:
 void setUniforms() {
   shader(prosceneShader);
-  pmv = Mat.multiply(scene.projection(), scene.modelView());
+  pmv = Matrix.multiply(scene.projection(), scene.modelView());
   pmatrix.set(pmv.get(new float[16]));
   prosceneShader.set("proscene_transform", pmatrix);
+}
+
+public class InteractiveNode extends Node {
+  public InteractiveNode(Graph graph) {
+    super(graph);
+  }
+
+  // this one gotta be overridden because we want a copied frame (e.g., line 100 above, i.e.,
+  // scene.eye().get()) to have the same behavior as its original.
+  protected InteractiveNode(Graph otherGraph, InteractiveNode otherNode) {
+    super(otherGraph, otherNode);
+  }
+
+  @Override
+  public InteractiveNode get() {
+    return new InteractiveNode(this.graph(), this);
+  }
+
+  // behavior is here :P
+  @Override
+  public void interact(MotionEvent event) {
+    if (event.shortcut().matches(MouseAgent.RIGHT))
+      translate(event);
+    else if (event.shortcut().matches(MouseAgent.LEFT))
+      rotate(event);
+    else if (event.shortcut().matches(MouseAgent.WHEEL))
+      if (isEye() && graph().is3D())
+        translateZ(event);
+      else
+        scale(event);
+  }
+
+  @Override
+  public void interact(TapEvent event) {
+    if (event.shortcut().matches(MouseAgent.CENTER_TAP2))
+      center();
+    else if (event.shortcut().matches(MouseAgent.RIGHT_TAP))
+      align();
+  }
 }
